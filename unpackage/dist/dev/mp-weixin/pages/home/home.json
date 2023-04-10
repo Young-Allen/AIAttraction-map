@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "智慧景区自由行",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "hx-navbar": "/uni_modules/hx-navbar/components/hx-navbar/hx-navbar",
+    "uni-section": "/uni_modules/uni-section/components/uni-section/uni-section",
+    "o-grid": "/uni_modules/o-grid/components/o-grid/o-grid",
+    "o-grid-item": "/uni_modules/o-grid/components/o-grid-item/o-grid-item",
+    "tabbar": "/components/tabbar/tabbar",
+    "goods-swiper": "/components/pyh-goodsSwiper/pyh-goodsSwiper",
+    "xsuu-swiper": "/components/Xss-swiper/Xsuu-swiper"
+  }
+}

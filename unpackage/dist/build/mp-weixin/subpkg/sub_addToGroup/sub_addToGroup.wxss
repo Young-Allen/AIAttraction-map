@@ -1,0 +1,1 @@
+.footer{position:fixed;bottom:0;width:750rpx;border-radius:15px 15px 0 0;padding:5px 0;background-color:#fff;box-shadow:0 0 2.2px rgba(0,0,0,.087),0 0 5.3px rgba(0,0,0,.125),0 0 10px rgba(0,0,0,.155),0 0 17.9px rgba(0,0,0,.185),0 0 33.4px rgba(0,0,0,.223),0 0 80px rgba(0,0,0,.31)}

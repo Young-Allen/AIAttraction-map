@@ -1,0 +1,34 @@
+page {
+  background-color: #004387;
+}
+.home {
+  padding-bottom: 50px;
+}
+.uni-margin-wrap {
+  width: 690rpx;
+  width: 100%;
+}
+.swiper {
+  height: 300rpx;
+}
+.swiper-item {
+  display: block;
+  text-align: center;
+}
+.swiper-list {
+  margin-top: 40rpx;
+  margin-bottom: 0;
+}
+.uni-common-mt {
+  margin-top: 60rpx;
+  position: relative;
+}
+.info {
+  position: absolute;
+  right: 20rpx;
+}
+.uni-padding-wrap {
+  width: 550rpx;
+  padding: 0 100rpx;
+}
+

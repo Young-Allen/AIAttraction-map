@@ -1,0 +1,153 @@
+{
+  "easycom": {
+    "^esc-(.*)": "@/components/sn-swiper/esc-$1/index.vue"
+  },
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/home/home",
+      "style": {
+        "navigationBarTitleText": "智慧景区自由行",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/road/road",
+      "style": {
+        "navigationBarTitleText": "路线",
+        "navigationStyle": "custom"
+      }
+    }, {
+      "path": "pages/road-map/road-map",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "pages/scenicSpot-list/scenicSpot-list",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "onReachBottomDistance": 150,
+        "enablePullDownRefresh": false,
+        "backgroundColor": "#F8F8F8"
+      }
+    }, {
+      "path": "pages/my/my",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "subPackages": [{
+    "root": "subpkg",
+    "pages": [{
+      "path": "sub_message/sub_message",
+      "style": {
+        "navigationBarTitleText": "消息界面",
+        "enablePullDownRefresh": false,
+        "navigationBarTextStyle": "white"
+      }
+    }, {
+      "path": "sub_pointDetail/sub_pointDetail",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_addToGroup/sub_addToGroup",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_agreeUser/sub_agreeUser",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_workingTime/sub_workingTime",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_roadLine/sub_roadLine",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_travelTips/sub_travelTips",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_travelTipsDetail/sub_travelTipsDetail",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_changeUserInfo/sub_changeUserInfo",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "sub_createGroup/sub_createGroup",
+      "style": {
+        "navigationBarTitleText": "创建群组",
+        "navigationBarTextStyle": "#fff",
+        "enablePullDownRefresh": false
+      }
+
+    }    ,{
+                    "path" : "sub_tourGroupInfo/sub_tourGroupInfo",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+  }],
+
+  "tabBar": {
+    "color": "#666",
+    "selectedColor": "#5498d1",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+        "pagePath": "pages/home/home"
+      },
+      {
+        "pagePath": "pages/road/road"
+      },
+      {
+        "pagePath": "pages/scenicSpot-list/scenicSpot-list"
+      },
+      {
+        "pagePath": "pages/my/my"
+      }
+    ]
+  },
+
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "庐山游",
+    "navigationBarBackgroundColor": "#47a6ff",
+    "backgroundColor": "#F8F8F8"
+  }
+}

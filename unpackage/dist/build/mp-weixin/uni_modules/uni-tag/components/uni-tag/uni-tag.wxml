@@ -1,0 +1,1 @@
+<view style="display:inline-block;margin:5px 5px;" class="data-v-6b8f5d60"><block wx:if="{{text}}"><text data-event-opts="{{[['tap',[['onClick',['$event']]]]]}}" class="{{['uni-tag','data-v-6b8f5d60',classes]}}" style="{{(customStyle)}}" bindtap="__e">{{text}}</text></block></view>

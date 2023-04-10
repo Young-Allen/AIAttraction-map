@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/road/road",
+    "pages/road-map/road-map",
+    "pages/scenicSpot-list/scenicSpot-list",
+    "pages/my/my"
+  ],
+  "subPackages": [
+    {
+      "root": "subpkg",
+      "pages": [
+        "sub_message/sub_message",
+        "sub_pointDetail/sub_pointDetail",
+        "sub_addToGroup/sub_addToGroup",
+        "sub_agreeUser/sub_agreeUser",
+        "sub_workingTime/sub_workingTime",
+        "sub_roadLine/sub_roadLine",
+        "sub_travelTips/sub_travelTips",
+        "sub_travelTipsDetail/sub_travelTipsDetail",
+        "sub_changeUserInfo/sub_changeUserInfo",
+        "sub_createGroup/sub_createGroup",
+        "sub_tourGroupInfo/sub_tourGroupInfo"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "庐山游",
+    "navigationBarBackgroundColor": "#47a6ff",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#666",
+    "selectedColor": "#5498d1",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home"
+      },
+      {
+        "pagePath": "pages/road/road"
+      },
+      {
+        "pagePath": "pages/scenicSpot-list/scenicSpot-list"
+      },
+      {
+        "pagePath": "pages/my/my"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序定位"
+    },
+    "scope.userFuzzyLocation": {
+      "desc": "你的位置信息将用于小程序定位"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getFuzzyLocation"
+  ],
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "tabbar": "/components/tabbar/tabbar"
+  }
+}

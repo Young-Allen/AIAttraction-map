@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["uni_modules/uni-section/components/uni-section/uni-section"],{"0fd6":function(t,n,e){"use strict";var i=e("aa66"),u=e.n(i);u.a},"236b":function(t,n,e){"use strict";e.r(n);var i=e("d508"),u=e("ca74");for(var a in u)["default"].indexOf(a)<0&&function(t){e.d(n,t,(function(){return u[t]}))}(a);e("0fd6");var o=e("f0c5"),r=Object(o["a"])(u["default"],i["b"],i["c"],!1,null,null,null,!1,i["a"],void 0);n["default"]=r.exports},aa66:function(t,n,e){},c136:function(t,n,e){"use strict";(function(t){Object.defineProperty(n,"__esModule",{value:!0}),n.default=void 0;var e={name:"UniSection",emits:["click"],props:{bgc:{type:String,default:"#fff"},type:{type:String,default:""},title:{type:String,required:!0,default:""},titleFontSize:{type:String,default:"14px"},titleColor:{type:String,default:"#333"},subTitle:{type:String,default:""},subTitleFontSize:{type:String,default:"12px"},subTitleColor:{type:String,default:"#999"},padding:{type:[Boolean,String],default:!1}},computed:{_padding:function(){return"string"===typeof this.padding?this.padding:this.padding?"10px":""}},watch:{title:function(n){t.report&&""!==n&&t.report("title",n)}},methods:{onClick:function(){this.$emit("click")}}};n.default=e}).call(this,e("543d")["default"])},ca74:function(t,n,e){"use strict";e.r(n);var i=e("c136"),u=e.n(i);for(var a in i)["default"].indexOf(a)<0&&function(t){e.d(n,t,(function(){return i[t]}))}(a);n["default"]=u.a},d508:function(t,n,e){"use strict";e.d(n,"b",(function(){return i})),e.d(n,"c",(function(){return u})),e.d(n,"a",(function(){}));var i=function(){var t=this.$createElement;this._self._c},u=[]}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'uni_modules/uni-section/components/uni-section/uni-section-create-component',
+    {
+        'uni_modules/uni-section/components/uni-section/uni-section-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("236b"))
+        })
+    },
+    [['uni_modules/uni-section/components/uni-section/uni-section-create-component']]
+]);

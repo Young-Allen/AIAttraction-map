@@ -1,0 +1,18 @@
+.container.data-v-8035e28c {
+  background-color: #FFF;
+}
+.container .title.data-v-8035e28c {
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 30rpx 30rpx 10rpx;
+}
+.container .row.data-v-8035e28c {
+  padding: 0 30rpx;
+}
+.container .content.data-v-8035e28c {
+  padding: 30rpx;
+  font-size: 28rpx;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+

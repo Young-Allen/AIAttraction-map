@@ -1,0 +1,29 @@
+@charset "UTF-8";
+/*每个页面公共css */
+/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: 'iconfont';  /* Project id 3836827 */
+  src: url('//at.alicdn.com/t/c/font_3836827_6k39i718vt.woff2?t=1671766891040') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3836827_6k39i718vt.woff?t=1671766891040') format('woff'),
+       url('//at.alicdn.com/t/c/font_3836827_6k39i718vt.ttf?t=1671766891040') format('truetype');
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-wodexuanzhong:before {
+  content: "\e600";
+}
+.icon-wode:before {
+  content: "\e638";
+}
+.icon-faxian:before {
+  content: "\e8c4";
+}
+page {
+  background-color: #f3f5f7;
+}
+

@@ -1,0 +1,85 @@
+
+.goodsSwiperBox {
+  width: 710rpx;
+  margin: 20rpx;
+  border-radius: 20rpx;
+  background: #fff;
+  padding: 0 20rpx 0 10rpx;
+  position: relative;
+  box-sizing: border-box;
+}
+.goodsSwiperBox .gswTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80rpx;
+  color: #999;
+  padding-left: 10rpx;
+}
+.goodsSwiperBox .gswTitle .gswTL {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+}
+.goodsSwiperBox .gswTitle .gswTL text:first-child {
+  font-weight: bold;
+  font-size: 36rpx;
+  margin-right: 5rpx;
+  color: #000;
+}
+.goodsSwiperBox .gswTitle .gswTL text:nth-child(2) {
+  background: red;
+  color: #fff;
+  border-radius: 16rpx;
+  line-height: 33rpx;
+  font-size: 22rpx;
+  padding: 0 12rpx;
+}
+.goodsSwiperBox .gswTitle .gswTR {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+}
+.goodsSwiperBox .gswTitle .gswTR image {
+  width: 24rpx;
+  height: 24rpx;
+}
+.gswSw {
+  height: 250rpx;
+  padding-bottom: 20rpx;
+}
+.gswGoods {
+  width: 100%;
+  padding-left: 10rpx;
+  font-weight: bold;
+}
+.gswGoods image {
+  width: 100%;
+  height: 176rpx;
+  border-radius: 15rpx;
+}
+.gswGoods .goodsTxt {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 24rpx;
+  line-height: 33rpx;
+  text-align: center;
+}
+.shadowLeft {
+  position: absolute;
+  left: 0;
+  top: 80rpx;
+  width: 125rpx;
+  height: 250rpx;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 225, 0));
+}
+.shadowRight {
+  position: absolute;
+  right: 0;
+  top: 80rpx;
+  width: 125rpx;
+  height: 250rpx;
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 225, 0));
+}
+

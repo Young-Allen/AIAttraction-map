@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "路线",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "hx-navbar": "/uni_modules/hx-navbar/components/hx-navbar/hx-navbar",
+    "uni-card": "/uni_modules/uni-card/components/uni-card/uni-card",
+    "tabbar": "/components/tabbar/tabbar"
+  }
+}

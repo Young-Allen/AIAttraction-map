@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "navigationStyle": "custom",
+  "onReachBottomDistance": 150,
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#F8F8F8",
+  "usingComponents": {
+    "hx-navbar": "/uni_modules/hx-navbar/components/hx-navbar/hx-navbar",
+    "custom-waterfalls-flow": "/uni_modules/custom-waterfalls-flow/components/custom-waterfalls-flow/custom-waterfalls-flow",
+    "tabbar": "/components/tabbar/tabbar"
+  }
+}

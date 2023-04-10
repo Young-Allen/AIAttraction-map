@@ -1,0 +1,20 @@
+{
+  "component": true,
+  "usingComponents": {
+    "road-map-movable-swiper-default": "/pages/road-map/road-map-movable-swiper-default",
+    "l-tabs": "/uni_modules/l-tabs/components/l-tabs/l-tabs",
+    "uni-notice-bar": "/uni_modules/uni-notice-bar/components/uni-notice-bar/uni-notice-bar",
+    "uni-fab": "/uni_modules/uni-fab/components/uni-fab/uni-fab",
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "uni-steps": "/uni_modules/uni-steps/components/uni-steps/uni-steps",
+    "movable-swiper": "/components/movable-swiper/movable-swiper",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "zqs-select": "/components/zqs-select/zqs-select",
+    "cmd-progress": "/components/cmd-progress/cmd-progress",
+    "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog",
+    "uni-rate": "/uni_modules/uni-rate/components/uni-rate/uni-rate",
+    "mid-tabbar": "/components/map_tabbar/map_tabbar",
+    "xiao-star-component": "/components/xiao-star-component/xiao-star-component",
+    "hm-sms-list-card": "/components/hm-sms-list-card/index"
+  }
+}

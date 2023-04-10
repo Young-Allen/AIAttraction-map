@@ -1,0 +1,1 @@
+<view class="my-container"><block wx:if="{{$root.g0===0}}"><my-login bind:userLogin="__e" vue-id="704e9d00-1" data-event-opts="{{[['^userLogin',[['userLogin']]]]}}" bind:__l="__l"></my-login></block><block wx:else><my-userinfo vue-id="704e9d00-2" bind:__l="__l"></my-userinfo></block><tabbar vue-id="704e9d00-3" pagePath="pages/my/my" bind:__l="__l"></tabbar></view>

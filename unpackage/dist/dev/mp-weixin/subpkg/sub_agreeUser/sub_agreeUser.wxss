@@ -1,0 +1,109 @@
+.user-info.data-v-4d52e7ec {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+}
+.user-info .user-info-pic.data-v-4d52e7ec {
+  width: 60px;
+  height: 60px;
+  background: #377fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  overflow: hidden;
+}
+.user-info .user-info-pic image.data-v-4d52e7ec {
+  width: 60px;
+  height: 60px;
+}
+.user-info .user-info-text .user-info-text-top.data-v-4d52e7ec {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  color: #333333;
+  margin-bottom: 10px;
+}
+.user-info .user-info-text .user-info-text-bottom text.data-v-4d52e7ec {
+  font-size: 14px;
+  line-height: 18px;
+  color: #666666;
+  margin-right: 10px;
+}
+.list .list-item.data-v-4d52e7ec {
+  background: #ffffff;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  position: relative;
+}
+.list .list-item.data-v-4d52e7ec:last-child {
+  margin-bottom: 0px;
+}
+.list .list-item.data-v-4d52e7ec:active {
+  background: #f2f3f4;
+}
+.list .list-item.show-icon.data-v-4d52e7ec::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  top: 20px;
+  right: 15px;
+}
+.list .list-item .list-item-left.data-v-4d52e7ec {
+  font-size: 16px;
+  color: #666666;
+  width: 100px;
+}
+.list .list-item .list-item-right.data-v-4d52e7ec {
+  font-size: 14px;
+  color: #000000;
+  flex: 1;
+}
+.list-btn.data-v-4d52e7ec {
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+.list-btn button.data-v-4d52e7ec {
+  height: 48px;
+  background: linear-gradient(270deg, #55bafe -0.03%, #3072ff 100%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  outline: none;
+  border: none;
+}
+.list-btn button.data-v-4d52e7ec:active {
+  opacity: 0.9;
+}
+.list-btn-reject.data-v-4d52e7ec {
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+.list-btn-reject button.data-v-4d52e7ec {
+  height: 48px;
+  background: linear-gradient(270deg, #EB3349 -0.03%, #F45C43 100%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+  outline: none;
+  border: none;
+}
+.list-btn-reject button.data-v-4d52e7ec:active {
+  opacity: 0.9;
+}
+

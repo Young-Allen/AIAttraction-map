@@ -1,0 +1,41 @@
+
+.pop-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 99;
+  position: absolute;
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border-right: 25rpx solid transparent;
+  border-left: 25rpx solid transparent;
+}
+.pop-body {
+  border-radius: 10px;
+  width: 288rpx;
+}
+.pop-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pop-line-full {
+  width: 288rpx;
+  height: 2rpx;
+}
+.pop-line {
+  width: 166rpx;
+  height: 2rpx;
+}
+.pop-img {
+  width: 50rpx;
+  height: 50rpx;
+  margin-left: 40rpx;
+  margin-top: 8px;
+  display: flexbox;
+}
+

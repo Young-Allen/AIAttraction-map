@@ -1,0 +1,1 @@
+<view class="container data-v-781a19a6"><view class="title data-v-781a19a6">{{articleDetail.title}}</view><view class="row flex-row data-v-781a19a6"><text class="text data-v-781a19a6">{{articleDetail.publishTime}}</text></view><view class="content data-v-781a19a6"><rich-text nodes="{{articleDetail.content}}"></rich-text></view></view>

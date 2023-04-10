@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["components/Xss-swiper/Xsuu-swiper"],{"4f35":function(t,e,n){"use strict";n.r(e);var u=n("c374"),r=n("d955");for(var f in r)["default"].indexOf(f)<0&&function(t){n.d(e,t,(function(){return r[t]}))}(f);n("ce4c");var i=n("f0c5"),a=Object(i["a"])(r["default"],u["b"],u["c"],!1,null,null,null,!1,u["a"],void 0);e["default"]=a.exports},"8d05":function(t,e,n){},c374:function(t,e,n){"use strict";n.d(e,"b",(function(){return u})),n.d(e,"c",(function(){return r})),n.d(e,"a",(function(){}));var u=function(){var t=this.$createElement;this._self._c},r=[]},ce4c:function(t,e,n){"use strict";var u=n("8d05"),r=n.n(u);r.a},d955:function(t,e,n){"use strict";n.r(e);var u=n("df01"),r=n.n(u);for(var f in u)["default"].indexOf(f)<0&&function(t){n.d(e,t,(function(){return u[t]}))}(f);e["default"]=r.a},df01:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var u={props:{previousMargin:{type:String,default:"0"},nextMargin:{type:String,default:"0"},swiperItems:{type:Array,default:function(){return new Array}},height:{type:Number,default:400},margin:{type:Number,default:20},borderRadius:{type:Number,default:20},titleFontSize:{type:Number,default:44},titleColor:{type:String,default:"#ffffff"},SubtitleFontSize:{type:Number,default:28},SubtitleColor:{type:String,default:"#ffffff"},dotMargin:{type:Number,default:0},dotHeight:{type:Number,default:0},SelectBG:{type:String,default:"rgba(255, 255, 255, 0.5)"},UncheckedBG:{type:String,default:"rgba(255, 255, 255, 1)"},DotPosition:{type:Number,default:1},button:{type:Number,default:1}},data:function(){return{enjoySiwper:0}},methods:{swiperChange:function(t){this.enjoySiwper=t.detail.current}}};e.default=u}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'components/Xss-swiper/Xsuu-swiper-create-component',
+    {
+        'components/Xss-swiper/Xsuu-swiper-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("4f35"))
+        })
+    },
+    [['components/Xss-swiper/Xsuu-swiper-create-component']]
+]);
