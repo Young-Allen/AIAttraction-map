@@ -26,7 +26,7 @@ const roadApi = {
     let query = {
       longitude: parseFloat(longitude.toFixed(6)),
       latitude: parseFloat(latitude.toFixed(6)),
-      target
+      target: target
     }
     const res = await uni.$http.post('/route/walking/single-source', query)
     return res.data

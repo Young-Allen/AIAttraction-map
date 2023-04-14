@@ -2,7 +2,7 @@
   <view class="container">
     <!--轮播-->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
-      <swiper-item v-for="itemImg in swiperList">
+      <swiper-item v-for="(itemImg, index) in swiperList" :key="index">
         <view class="swiper-item">
           <image :src="itemImg" class="banner-img"></image>
         </view>

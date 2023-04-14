@@ -117,8 +117,12 @@ var _default = {
   },
   methods: {
     gotoPosition: function gotoPosition(id) {
+      var pos = {
+        longitude: this.attractionDetail.longitude,
+        latitude: this.attractionDetail.latitude
+      };
       uni.navigateTo({
-        url: "/pages/road-map/road-map?gotoPosition=true&attractionId=" + id
+        url: "/pages/road-map/road-map?gotoPosition=true&pos=" + encodeURIComponent(JSON.stringify(pos))
       });
     }
   }

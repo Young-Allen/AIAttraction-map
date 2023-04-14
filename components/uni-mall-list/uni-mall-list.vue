@@ -84,10 +84,10 @@
         timerId: '',
         popList: [{
           name: '加入群组',
-          icon: 'https://gitee.com/XXXTENTWXD/pic/raw/master/images/%E6%B7%BB%E5%8A%A0%E7%BE%A4%E8%81%8A.png'
+          icon: '/static/my-icons/addtogroup.png'
         }, {
           name: '创建群组',
-          icon: 'https://gitee.com/XXXTENTWXD/pic/raw/master/images/%E6%95%B0%E8%AF%91_%E7%BE%A4%E8%81%8A.png'
+          icon: '/static/my-icons/groupchat.png'
         }],
       };
     },
@@ -102,6 +102,9 @@
         })
         // 关闭窗口后，恢复默认内容
         this.$refs.inputDialog.close()
+        uni.navigateTo({
+          url: "/subpkg/sub_addToGroup/sub_addToGroup"
+        })
       },
 
       //点击下拉栏的标签所执行的函数

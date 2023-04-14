@@ -20,9 +20,8 @@
     <!-- 弹出框，具体路线信息 -->
     <uni-popup ref="roadMsg" type="bottom">
       <view class="roadContent">
-        <!-- <vgt-tab :list="roadNameList" @onValueChange="onValueChange"></vgt-tab> -->
         <view class="scenicCon" v-if="polyline.length !== 0">
-          <text v-if="spendTime !== ''"
+          <text v-if="spendTime !== '' && spendTime != null"
             style="color: #47a6ff; font-weight: 700; font-size: 17px; text-align: center; margin-bottom: 5px;">预计花费时间：{{spendTime}}分钟</text>
           <!-- 景点进度条 -->
           <uni-steps :options="threeRoadOne" :active="activePoint" @switchSpot="switchSpot"></uni-steps>
@@ -174,6 +173,7 @@
         //动态路线
         dynamicRoad: [],
         dynamicRoadPolyline: [],
+        dynamicSpendTime: '',
         //群组vip路线
         vipRoad: [],
         vipRoadPolyline: [],
@@ -228,7 +228,7 @@
 
     async onReady() {
       let that = this
-      this._mapContext = uni.createMapContext("map", this);
+      // this._mapContext = uni.createMapContext("map", this);
 
       // 仅调用初始化，才会触发 on.("markerClusterCreate", (e) => {})
       this._mapContext.initMarkerCluster({
@@ -238,7 +238,7 @@
       });
 
       //限制地图移动范围
-      // this.setMapBoundary()
+      this.setMapBoundary()
 
       //获取景点信息
       attractionApi.getAttractionList(1, 50).then(res => {
@@ -262,7 +262,10 @@
         iconPath: '../../static/place_icons/locPosition.png'
       });
 
-      if (this.userPosition !== '') this.addUserMarker(this.userPosition)
+      if (this.userPosition !== '') {
+        this.addUserMarker(this.userPosition)
+        this.moveToLocation(this.userPosition)
+      }
 
       uni.connectSocket({
         url: 'wss://www.expiredcanned.love/contact/' + this.userinfo.id,
@@ -282,11 +285,15 @@
 
     onLoad(option) {
       let that = this
+      this._mapContext = uni.createMapContext("map", this);
       if (option.showStaticRoad === 'true') {
         this.polyline = []
         this.getStaticRoad(option.staticRoadId);
-      } else if (option.showStaticRoad === 'true') {
+      } else if (option.showStaticRoad === 'true') {}
 
+      if (option.gotoPosition) {
+        const moveToPos = JSON.parse(decodeURIComponent(option.pos));
+        this.moveToLocation(moveToPos)
       }
 
       //获取景点实时人数
@@ -316,10 +323,46 @@
 
       //获取动态路线
       async gotoPos(targetId) {
+        let that = this
         console.log(targetId);
         console.log(this.userPosition);
-        const dynamicRoad = await roadApi.pathToSingleSource(this.userPosition.longitude, this.userPosition.latitude, targetId)
+        const {
+          data: dynamicRoad
+        } = await roadApi.pathToSingleSource(this.userPosition.longitude, this.userPosition.latitude,
+          targetId)
         console.log(dynamicRoad);
+        this.dynamicSpendTime = dynamicRoad.totalCost
+        this.spendTime = dynamicRoad.totalCost
+        this.polyline = []
+        this.dynamicRoad = []
+        this.dynamicRoad.push(this.userPosition)
+        dynamicRoad.viaNodeIds.forEach(item => {
+          const pos = this.allPointList.find(res => res.id === item)
+          this.dynamicRoad.push(pos)
+        })
+        this.roadContent.forEach(item => item.active = false)
+        this.roadContent[1].active = true
+
+        for (var i = 0; i < this.dynamicRoad.length - 1; i++) {
+          let to = {
+              longitude: this.dynamicRoad[i + 1].longitude,
+              latitude: this.dynamicRoad[i + 1].latitude
+            },
+            from = {
+              longitude: this.dynamicRoad[i].longitude,
+              latitude: this.dynamicRoad[i].latitude
+            };
+          //非企业用户限制并发访问量为5次/秒，设置延时访问
+          setTimeout(function() {
+            that.addPointPolyline(from, to)
+          }, ((i / 4) - 1) * 10000);
+        }
+
+        this.dynamicRoad.shift()
+        this.dynamicRoadPolyline = this.polyline
+        this.threeRoadOne = this.dynamicRoad
+        this.$refs.popupHi.close()
+        this.$refs.roadMsg.open()
       },
 
       //切换顶部导航栏
@@ -331,6 +374,7 @@
           this.addMarkers(tempPoint);
         }
       },
+
       //获取静态路线
       getStaticRoad(id) {
         this.spendTime = ''
@@ -477,8 +521,12 @@
       //筛选想去的景点
       selectPoint(uniqueIds) {
         console.log(uniqueIds);
-        if(uniqueIds.length === 1) return  uni.showToast({icon:'none' ,title: '再选一个景点吧！',duration: 2000});
-        
+        if (uniqueIds.length === 1) return uni.showToast({
+          icon: 'none',
+          title: '再选一个景点吧！',
+          duration: 2000
+        });
+
         this.sortCheckPointList = []
         uniqueIds.forEach(item => {
           let temp = {}
@@ -589,12 +637,6 @@
         }
       },
 
-      //选中路线事件
-      // onValueChange(e) {
-      //   this.updatePointList(e.currentItem)
-      //   console.log(e);
-      // },
-
       //展开菜单点击事件，返回点击信息
       trigger(e) {
         this.updateActivePoint(0)
@@ -603,6 +645,7 @@
           this.polyline = this.staticRoadPolyline
           this.threeRoadOne = this.staticRoad.roadList
         } else if (e.index === 1) {
+          this.spendTime = this.dynamicSpendTime
           this.polyline = this.dynamicRoadPolyline
           this.threeRoadOne = this.dynamicRoad
         } else if (e.index === 2) {

@@ -24,7 +24,7 @@
       <view class="list-item show-icon">
         <view class="list-item-left">兴趣</view>
         <view class="list-item-right" style="padding: 10px 0px;">
-          <block v-for="(item, index) in user.interestTags">
+          <block v-for="(item, index) in user.interestTags" :key="index">
             <uni-tag :text="item.tagName" :type="types[index % 5]" />
           </block>
         </view>

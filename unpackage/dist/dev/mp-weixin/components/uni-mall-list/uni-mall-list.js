@@ -80,10 +80,10 @@ var components
 try {
   components = {
     uniMallHead: function () {
-      return __webpack_require__.e(/*! import() | components/uni-mall-head/uni-mall-head */ "components/uni-mall-head/uni-mall-head").then(__webpack_require__.bind(null, /*! @/components/uni-mall-head/uni-mall-head.vue */ 447))
+      return __webpack_require__.e(/*! import() | components/uni-mall-head/uni-mall-head */ "components/uni-mall-head/uni-mall-head").then(__webpack_require__.bind(null, /*! @/components/uni-mall-head/uni-mall-head.vue */ 454))
     },
     luanqingPopupDialog: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog */ "uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog").then(__webpack_require__.bind(null, /*! @/uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog.vue */ 454))
+      return __webpack_require__.e(/*! import() | uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog */ "uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog").then(__webpack_require__.bind(null, /*! @/uni_modules/luanqing-popup-dialog/components/luanqing-popup-dialog/luanqing-popup-dialog.vue */ 461))
     },
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 254))
@@ -184,7 +184,7 @@ exports.default = void 0;
 var _tourgroupApi = _interopRequireDefault(__webpack_require__(/*! @/api/tourgroupApi.js */ 95));
 var uniMallHead = function uniMallHead() {
   __webpack_require__.e(/*! require.ensure | components/uni-mall-head/uni-mall-head */ "components/uni-mall-head/uni-mall-head").then((function () {
-    return resolve(__webpack_require__(/*! @/components/uni-mall-head/uni-mall-head.vue */ 447));
+    return resolve(__webpack_require__(/*! @/components/uni-mall-head/uni-mall-head.vue */ 454));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default2 = {
@@ -217,10 +217,10 @@ var _default2 = {
       timerId: '',
       popList: [{
         name: '加入群组',
-        icon: 'https://gitee.com/XXXTENTWXD/pic/raw/master/images/%E6%B7%BB%E5%8A%A0%E7%BE%A4%E8%81%8A.png'
+        icon: '/static/my-icons/addtogroup.png'
       }, {
         name: '创建群组',
-        icon: 'https://gitee.com/XXXTENTWXD/pic/raw/master/images/%E6%95%B0%E8%AF%91_%E7%BE%A4%E8%81%8A.png'
+        icon: '/static/my-icons/groupchat.png'
       }]
     };
   },
@@ -235,6 +235,9 @@ var _default2 = {
       });
       // 关闭窗口后，恢复默认内容
       this.$refs.inputDialog.close();
+      uni.navigateTo({
+        url: "/subpkg/sub_addToGroup/sub_addToGroup"
+      });
     },
     //点击下拉栏的标签所执行的函数
     onClickPopMenu: function onClickPopMenu(item) {

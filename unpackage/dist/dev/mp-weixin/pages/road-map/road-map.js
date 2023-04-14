@@ -322,7 +322,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 //
 //
 //
-//
 
 var img = '../../static/place_icons/place02.png';
 var locImg = '../../static/place_icons/locPosition.png';
@@ -398,6 +397,7 @@ var _default = {
       //动态路线
       dynamicRoad: [],
       dynamicRoadPolyline: [],
+      dynamicSpendTime: '',
       //群组vip路线
       vipRoad: [],
       vipRoadPolyline: [],
@@ -454,9 +454,7 @@ var _default = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              that = _this2;
-              _this2._mapContext = uni.createMapContext("map", _this2);
-
+              that = _this2; // this._mapContext = uni.createMapContext("map", this);
               // 仅调用初始化，才会触发 on.("markerClusterCreate", (e) => {})
               _this2._mapContext.initMarkerCluster({
                 enableDefaultStyle: false,
@@ -465,7 +463,7 @@ var _default = {
               });
 
               //限制地图移动范围
-              // this.setMapBoundary()
+              _this2.setMapBoundary();
 
               //获取景点信息
               _attractionApi.default.getAttractionList(1, 50).then(function (res) {
@@ -490,7 +488,10 @@ var _default = {
               _this2._mapContext.setLocMarkerIcon({
                 iconPath: '../../static/place_icons/locPosition.png'
               });
-              if (_this2.userPosition !== '') _this2.addUserMarker(_this2.userPosition);
+              if (_this2.userPosition !== '') {
+                _this2.addUserMarker(_this2.userPosition);
+                _this2.moveToLocation(_this2.userPosition);
+              }
               uni.connectSocket({
                 url: 'wss://www.expiredcanned.love/contact/' + _this2.userinfo.id,
                 header: {
@@ -515,10 +516,15 @@ var _default = {
   onLoad: function onLoad(option) {
     var _this3 = this;
     var that = this;
+    this._mapContext = uni.createMapContext("map", this);
     if (option.showStaticRoad === 'true') {
       this.polyline = [];
       this.getStaticRoad(option.staticRoadId);
     } else if (option.showStaticRoad === 'true') {}
+    if (option.gotoPosition) {
+      var moveToPos = JSON.parse(decodeURIComponent(option.pos));
+      this.moveToLocation(moveToPos);
+    }
 
     //获取景点实时人数
     this.getCrowdsTimer = setInterval(function () {
@@ -541,19 +547,58 @@ var _default = {
     gotoPos: function gotoPos(targetId) {
       var _this4 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-        var dynamicRoad;
+        var that, _yield$roadApi$pathTo, dynamicRoad, _loop, i;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                that = _this4;
                 console.log(targetId);
                 console.log(_this4.userPosition);
-                _context2.next = 4;
+                _context2.next = 5;
                 return _roadApi.default.pathToSingleSource(_this4.userPosition.longitude, _this4.userPosition.latitude, targetId);
-              case 4:
-                dynamicRoad = _context2.sent;
+              case 5:
+                _yield$roadApi$pathTo = _context2.sent;
+                dynamicRoad = _yield$roadApi$pathTo.data;
                 console.log(dynamicRoad);
-              case 6:
+                _this4.dynamicSpendTime = dynamicRoad.totalCost;
+                _this4.spendTime = dynamicRoad.totalCost;
+                _this4.polyline = [];
+                _this4.dynamicRoad = [];
+                _this4.dynamicRoad.push(_this4.userPosition);
+                dynamicRoad.viaNodeIds.forEach(function (item) {
+                  var pos = _this4.allPointList.find(function (res) {
+                    return res.id === item;
+                  });
+                  _this4.dynamicRoad.push(pos);
+                });
+                _this4.roadContent.forEach(function (item) {
+                  return item.active = false;
+                });
+                _this4.roadContent[1].active = true;
+                _loop = function _loop() {
+                  var to = {
+                      longitude: _this4.dynamicRoad[i + 1].longitude,
+                      latitude: _this4.dynamicRoad[i + 1].latitude
+                    },
+                    from = {
+                      longitude: _this4.dynamicRoad[i].longitude,
+                      latitude: _this4.dynamicRoad[i].latitude
+                    };
+                  //非企业用户限制并发访问量为5次/秒，设置延时访问
+                  setTimeout(function () {
+                    that.addPointPolyline(from, to);
+                  }, (i / 4 - 1) * 10000);
+                };
+                for (i = 0; i < _this4.dynamicRoad.length - 1; i++) {
+                  _loop();
+                }
+                _this4.dynamicRoad.shift();
+                _this4.dynamicRoadPolyline = _this4.polyline;
+                _this4.threeRoadOne = _this4.dynamicRoad;
+                _this4.$refs.popupHi.close();
+                _this4.$refs.roadMsg.open();
+              case 23:
               case "end":
                 return _context2.stop();
             }
@@ -586,38 +631,38 @@ var _default = {
         });
         _this5.roadContent[0].active = true;
         _this5.$refs.roadMsg.open();
-        var _loop = function _loop(i) {
+        var _loop2 = function _loop2(_i) {
           var to = {},
             from = {};
-          if (_this5.staticRoad.roadList[i + 1].name === "三叠泉") {
+          if (_this5.staticRoad.roadList[_i + 1].name === "三叠泉") {
             to = {
               longitude: '116.024443',
               latitude: '29.560302'
             };
           } else {
             to = {
-              longitude: _this5.staticRoad.roadList[i + 1].longitude,
-              latitude: _this5.staticRoad.roadList[i + 1].latitude
+              longitude: _this5.staticRoad.roadList[_i + 1].longitude,
+              latitude: _this5.staticRoad.roadList[_i + 1].latitude
             };
           }
-          if (_this5.staticRoad.roadList[i].name === "三叠泉") {
+          if (_this5.staticRoad.roadList[_i].name === "三叠泉") {
             from = {
               longitude: '116.024443',
               latitude: '29.560302'
             };
           } else {
             from = {
-              longitude: _this5.staticRoad.roadList[i].longitude,
-              latitude: _this5.staticRoad.roadList[i].latitude
+              longitude: _this5.staticRoad.roadList[_i].longitude,
+              latitude: _this5.staticRoad.roadList[_i].latitude
             };
           }
           //非企业用户限制并发访问量为5次/秒，设置延时访问
           setTimeout(function () {
             that.addPointPolyline(from, to);
-          }, (i / 4 - 1) * 10000);
+          }, (_i / 4 - 1) * 10000);
         };
-        for (var i = 0; i < _this5.staticRoad.roadList.length - 1; i++) {
-          _loop(i);
+        for (var _i = 0; _i < _this5.staticRoad.roadList.length - 1; _i++) {
+          _loop2(_i);
         }
         _this5.staticRoadPolyline = _this5.polyline;
       });
@@ -756,7 +801,7 @@ var _default = {
                   //终点坐标
                   success: function () {
                     var _success = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(res) {
-                      var result, pointIds, _yield$roadApi$getVip, vipRoadId, _loop2, i;
+                      var result, pointIds, _yield$roadApi$getVip, vipRoadId, _loop3, i;
                       return _regenerator.default.wrap(function _callee3$(_context3) {
                         while (1) {
                           switch (_context3.prev = _context3.next) {
@@ -796,7 +841,7 @@ var _default = {
                               _this.roadContent[2].active = true;
                               _this.threeRoadOne = _this.vipRoad;
                               _this.$refs.roadMsg.open();
-                              _loop2 = function _loop2() {
+                              _loop3 = function _loop3() {
                                 var to = {},
                                   from = {};
                                 if (_this.vipRoad[i + 1].name === "三叠泉") {
@@ -827,7 +872,7 @@ var _default = {
                                 }, (i / 4 - 1) * 10000);
                               };
                               for (i = 0; i < _this.vipRoad.length - 1; i++) {
-                                _loop2();
+                                _loop3();
                               }
                               console.log(_this.vipRoad);
                               _this.vipRoadPolyline = _this.polyline;
@@ -874,11 +919,6 @@ var _default = {
         this.activePoint = 0;
       }
     },
-    //选中路线事件
-    // onValueChange(e) {
-    //   this.updatePointList(e.currentItem)
-    //   console.log(e);
-    // },
     //展开菜单点击事件，返回点击信息
     trigger: function trigger(e) {
       this.updateActivePoint(0);
@@ -887,6 +927,7 @@ var _default = {
         this.polyline = this.staticRoadPolyline;
         this.threeRoadOne = this.staticRoad.roadList;
       } else if (e.index === 1) {
+        this.spendTime = this.dynamicSpendTime;
         this.polyline = this.dynamicRoadPolyline;
         this.threeRoadOne = this.dynamicRoad;
       } else if (e.index === 2) {

@@ -16,7 +16,7 @@
         <view class="recommandPoint">
           <text style="left: 10px; color: #666; font-size: 15px; font-weight: bold;">猜你想去</text>
           <view class="tag_container">
-            <zyTag v-for="(item,index) in recommendations" :text="item.attractionName" size="medium" circle="true"
+            <zyTag v-for="(item,index) in recommendations" :key="index" :text="item.attractionName" size="medium" circle="true"
               v-bind:theme="item.checked===true?'dark':'plain'" @click="multiHandle(item,index)" />
           </view>
         </view>
