@@ -715,6 +715,12 @@ var _default = {
     //筛选想去的景点
     selectPoint: function selectPoint(uniqueIds) {
       var _this6 = this;
+      console.log(uniqueIds);
+      if (uniqueIds.length === 1) return uni.showToast({
+        icon: 'none',
+        title: '再选一个景点吧！',
+        duration: 2000
+      });
       this.sortCheckPointList = [];
       uniqueIds.forEach(function (item) {
         var temp = {};

@@ -280,7 +280,6 @@
 
     },
 
-
     onLoad(option) {
       let that = this
       if (option.showStaticRoad === 'true') {
@@ -477,6 +476,9 @@
 
       //筛选想去的景点
       selectPoint(uniqueIds) {
+        console.log(uniqueIds);
+        if(uniqueIds.length === 1) return  uni.showToast({icon:'none' ,title: '再选一个景点吧！',duration: 2000});
+        
         this.sortCheckPointList = []
         uniqueIds.forEach(item => {
           let temp = {}

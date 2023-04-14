@@ -24,7 +24,7 @@
       </view>
     </view>
 
-    <view class="list-btn-reject" v-if="creator.id === groupInfo.creator"><button type="button" @click="handleClickRej">解散群组</button></view>
+    <!-- <view class="list-btn-reject" v-if="creator.id === groupInfo.creator"><button type="button" @click="handleClickRej">解散群组</button></view> -->
   </view>
 </template>
 
