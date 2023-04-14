@@ -46,7 +46,7 @@ const tourgroupApi = {
     const res = await uni.$http.get('/notice/group', query)
     return res.data.data
   },
-  
+
   //根据id获取历史消息
   async getNoticeById(id) {
     const res = await uni.$http.get(`/notice/${id}`)
@@ -55,9 +55,13 @@ const tourgroupApi = {
 
   //发送群组消息
   async publishGroupNotice(subject, content) {
+    const date = new Date();
+    const isoString = date.toISOString();
     let query = {
       subject: subject,
       content: content,
+      publishTime: isoString,
+      type: '一般事件'
     }
     const res = await uni.$http.post('/notice/group-publish', query)
     return res.data.data

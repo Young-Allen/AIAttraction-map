@@ -3,8 +3,9 @@
 
     <!-- 头像昵称区域 -->
     <view class="top-box">
-      <image v-if="!userinfo.avater" src="@/static/user/2.jpg" class="avatar"></image>
-      <image v-else :src="userinfo.avater" class="avatar"></image>
+      <image v-if="userinfo.avatar === ''" src="@/static/hm-sms-list-card/images/img_25832_0_2.png" class="avatar"></image>
+      <image v-else :src="userinfo.avatar" class="avatar"></image>
+      <text style="margin-top: 5px;font-weight: 600;font-size: 15px">{{userinfo.name}}</text>
     </view>
 
     <!-- 面板的列表区域 -->
@@ -33,10 +34,10 @@
           <text>联系客服</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
         </view>
-        <view class="panel-list-item">
+    <!--    <view class="panel-list-item">
           <text>退出登录</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>
@@ -60,8 +61,7 @@
 
       };
     },
-    onLoad() {
-    },
+    onLoad() {},
     onReady() {
       userApi.getUserInfo().then(res => {
         this.updateUserInfo(res.data)

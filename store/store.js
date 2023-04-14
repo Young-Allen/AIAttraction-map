@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import moduleUser from './user.js'
 import moduleRoadMsg from './roadMsg.js'
 import moduleSettings from './settings.js'
+import moduleGroup from './group.js'
 // 2. 将 Vuex 安装为 Vue 的插件
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
     m_user: moduleUser,
     m_roadMsg: moduleRoadMsg,
     m_settings: moduleSettings,
+    m_group: moduleGroup
   },
 })
 

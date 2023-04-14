@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "lazy-load-image": "/uni_modules/pp-waterfall-flow/components/lazy-load-image/lazy-load-image"
+  },
+  "component": true
+}

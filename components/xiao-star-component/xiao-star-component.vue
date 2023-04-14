@@ -56,7 +56,7 @@
 		},
 		mounted() {
 			this.star_count = JSON.parse(JSON.stringify(this.starCount))
-			var star_count = this.star_count / 2
+			var star_count = this.star_count
 			if (String(this.starCount).indexOf('.') != -1) {
 				// 小数
 				var decimalsSatr = parseInt(star_count)

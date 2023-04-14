@@ -15,7 +15,6 @@
   align-items: center;
   justify-content: center;
   margin-right: 20px;
-  overflow: hidden;
 }
 .user-info .user-info-pic image.data-v-6e1d7d68 {
   width: 60px;

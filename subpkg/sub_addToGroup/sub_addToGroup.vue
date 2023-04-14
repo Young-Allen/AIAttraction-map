@@ -4,8 +4,10 @@
 
     <uni-popup ref="inputDialog" type="dialog">
       <uni-popup-dialog ref="inputClose" mode="input" title="发送群消息" @confirm="dialogInputConfirm">
-        <uni-easyinput class="uni-mt-5" trim="all" v-model="subject" placeholder="请输入主题"></uni-easyinput>
-        <uni-easyinput type="textarea" v-model="groupMsg" placeholder="请输入内容"></uni-easyinput>
+        <view class="popupBox">
+          <uni-easyinput class="uni-mt-5" trim="all" v-model="subject" placeholder="请输入主题"></uni-easyinput>
+          <uni-easyinput type="textarea" v-model="groupMsg" placeholder="请输入内容"></uni-easyinput>
+        </view>
       </uni-popup-dialog>
     </uni-popup>
 
@@ -25,13 +27,13 @@
     mapState,
     mapMutations
   } from 'vuex'
-  
+
   export default {
     components: {
       uniMallList
     },
     computed: {
-      ...mapState('m_user', ['userinfo'])
+      ...mapState('m_user', ['userinfo']),
     },
     data() {
       return {
@@ -49,7 +51,7 @@
     onReady() {
       tourgroupApi.tourGroupInfo().then(res => {
         this.creator = res.creator
-        console.log(this.creator);
+        this.updateCreator(this.creator)
         console.log(res);
         let tourgroup = {
           id: res.id,
@@ -58,19 +60,19 @@
           inviteCode: res.inviteCode,
           groupSize: res.groupSize,
           type: 'department',
+          creator: res.creator.id
         }
         this.dataList.push(tourgroup);
         for (let i = 0; i < res.members.length; i++) {
           let mbrs = {
-            tag: 0,
-            type: 'user',
             id: res.members[i].id,
             name: res.members[i].name,
             pic: res.members[i].avatar,
             birthday: res.members[i].birthday,
             gender: res.members[i].gender,
             interestTags: res.members[i].interestTags,
-            phone: res.members[i].phone
+            phone: res.members[i].phone,
+            type: 'user',
           }
           this.dataList.push(mbrs);
         }
@@ -81,6 +83,9 @@
     onLoad() {},
 
     methods: {
+      ...mapMutations('m_group', ['updateCreator']),
+      
+      //
       //发送群消息
       dialogInputConfirm() {
         console.log(this.subject);
@@ -125,5 +130,12 @@
       0px 0px 17.9px rgba(0, 0, 0, 0.185),
       0px 0px 33.4px rgba(0, 0, 0, 0.223),
       0px 0px 80px rgba(0, 0, 0, 0.31);
+  }
+
+  .popupBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>

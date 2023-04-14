@@ -15,7 +15,7 @@
       mode="scaleToFill" style="width: 100%; height: 350rpx;"></image>
 
     <view style="margin-top: -50px; margin-bottom: 10px; background: linear-gradient(to bottom, #4f7fb6, #004387);">
-      <Xsuu-swiper :swiperItems="swiperItems"></Xsuu-swiper>
+      <Xsuu-swiper :swiperItems="swiperItems" @clickSwiper="clickSwiper"></Xsuu-swiper>
     </view>
 
     <uni-section title="功能导览" type="line" bgc="#004387" titleColor="white">
@@ -83,13 +83,16 @@
             "img": "https://alifei04.cfp.cn/creative/vcg/nowater800/new/VCG211372937832.jpg?x-oss-process=image/format,webp",
             "title": "如琴湖",
             "Subtitle": "人间四月芳菲尽，山寺桃花始盛开",
+            "id": '1018',
           },
           {
+            "id": '1005',
             "img": "https://tenfei03.cfp.cn/creative/vcg/nowater800/new/VCG211423703129.jpg?x-oss-process=image/format,webp",
             "title": "五老峰",
             "Subtitle": "庐山东南五老峰，青天削出金芙蓉",
           },
           {
+            "id": '1004',
             "img": "https://alifei05.cfp.cn/creative/vcg/nowarter800/new/VCG211169926925.jpg?x-oss-process=image/format,webp",
             "title": "三叠泉",
             "Subtitle": "当年庐山三叠泉，翠峰临水自分明",
@@ -107,34 +110,30 @@
         },
       }
     },
-    onReady() {
-      roadApi.getStaticRoadList(1).then(res => {
-        this.roadList.list = res.data.data[0]
-      })
-      
-      articleApi.getArticleList().then(res => {
-        this.hotList.list = res.data[0]
-      })
-      
-      if (this.token === '') {
-        uni.login({
-          success: (res) => {
-            if (res.code) { //微信登录成功 已拿到code
-              console.log("微信登录成功 已拿到code: " + res.code);
-              userApi.wechatLogin(res.code).then(res => {
-                console.log(res.data.authorization);
-                this.updateToken(res.data.authorization)
-              })
-            } else {
-              console.log('登录失败！' + res.errMsg)
-            }
-          }
-        });
-      }
-    },
+    onReady() {},
     onLoad() {
+      let that = this
       uni.hideTabBar()
-      
+      uni.login({
+        success: (res) => {
+          if (res.code) { //微信登录成功 已拿到code
+            console.log("微信登录成功 已拿到code: " + res.code);
+            userApi.wechatLogin(res.code).then(res => {
+              console.log(res.data.authorization);
+              that.updateToken(res.data.authorization)
+              
+              roadApi.getStaticRoadList(1, 10).then(res => {
+                that.roadList.list = res.data.data[0]
+              })
+              articleApi.getArticleList().then(res => {
+                that.hotList.list = res.data[0]
+              })
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      });
     },
 
     onPageScroll(e) {
@@ -143,6 +142,14 @@
     },
     methods: {
       ...mapMutations('m_user', ['updateToken', 'saveTokenToStorage']),
+
+      //点击轮播图
+      clickSwiper(id) {
+        uni.navigateTo({
+          url: '/subpkg/sub_pointDetail/sub_pointDetail?id=' + id
+        })
+        console.log(id);
+      },
 
       onClickBtn(data) {
         //console.log(data);

@@ -10,6 +10,11 @@
         <button v-if="!avater" open-type="getUserInfo" @tap="getUserInfo" class="getInfo"></button>
       </view>
 
+      <view class="ui-list">
+        <text>姓名</text>
+        <input type="text" v-model="name">
+      </view>
+      
       <view class="ui-list right">
         <text>性别</text>
         <picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="sex">
@@ -129,8 +134,8 @@
         ],
         colse: false,
         curInt: [],
-        tmptags:[],
-        
+        tmptags: [],
+
         position: '',
         value: '请填写',
         sex: [{
@@ -144,10 +149,21 @@
         date: '请填写',
         avater: '',
         url: '',
-        headimg: ''
+        headimg: '',
+        name: '',
       }
     },
 
+    onReady() {
+      this.avater = this.userinfo.avatar
+      this.date = this.userinfo.birthday
+      this.name = this.userinfo.name
+      if (this.userinfo.gender === '男') {
+        this.index = 0
+      } else {
+        this.index = 1
+      }
+    },
     onLoad(option) {
       let that = this
       userApi.getAllTags().then(res => {
@@ -163,6 +179,7 @@
       if (option.userInfo !== undefined) {
         const userInfo = JSON.parse(decodeURIComponent(option.userInfo));
         this.avater = userInfo.avatarUrl
+        this.date = userInfo.birthday
         console.log(userInfo);
       }
     },
@@ -171,6 +188,20 @@
       ...mapMutations('m_user', ['saveUserInfoToStorage', 'updateUserInfo', 'updateToken', 'saveTokenToStorage',
         'updateUserPosition'
       ]),
+
+      //计算生日
+      calculateAge(birthdayString) {
+        const birthday = new Date(birthdayString);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthday.getFullYear();
+        const monthDifference = today.getMonth() - birthday.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthday.getDate())) {
+          age--;
+        }
+        return age;
+      },
 
       //获取用户当前的定位
       getPosition() {
@@ -217,6 +248,7 @@
         console.log(this.userPosition);
         let that = this;
         let headimg = that.headimg;
+        let name = that.name
         let gender = that.index;
         let birthday = that.date;
         let interestTags = []
@@ -258,6 +290,7 @@
         }
         updata.birthday = birthday;
         updata.address = address
+        updata.name = name
 
         that.updata(updata);
       },
@@ -265,11 +298,38 @@
       async updata(datas) {
         //传后台
         console.log(datas);
-        userApi.updateUserInfo(datas).then(res => {
-          this.updateUserInfo(res.data)
-          uni.switchTab({
-            url: '/pages/my/my'
-          })
+        const res = await userApi.updateUserInfo(datas)
+        res.data.birthday = res.data.birthday.substring(0, 10)
+        console.log(res.data);
+        console.log(res.data.birthday.substring(0, 10));
+        let interests = []
+        res.data.interestTags.forEach(item => {
+          interests.push(item.tagName)
+        })
+        let recommendUser = {
+          id: res.data.id,
+          age: this.calculateAge(res.data.birthday),
+          gender: res.data.gender,
+          interests,
+        }
+        
+        //向算法端传送感兴趣的景点
+        wx.request({
+          url: 'http://region-42.seetacloud.com:55956/recommend',
+          method: "POST",
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          data: recommendUser,
+          success(res) {
+            console.log(res.data)
+          }
+        })
+
+        console.log(recommendUser);
+        this.updateUserInfo(res.data)
+        uni.switchTab({
+          url: '/pages/my/my'
         })
       },
 
@@ -341,7 +401,7 @@
       bindDateChange(e) {
         this.date = e.detail.value;
       },
-      
+
     },
   }
 </script>

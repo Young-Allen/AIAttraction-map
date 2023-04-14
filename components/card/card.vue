@@ -5,7 +5,7 @@
       <view class="info">
         <view class="summary">{{article.content}}</view>
         <view class="flex-row">
-          <text class="date">{{article.publishTime}}</text>
+          <text class="date">{{article.publishTime | parseTime}}</text>
         </view>
       </view>
       <view class="cover">
@@ -30,6 +30,22 @@
           };
         }
       },
+    },
+    filters: {
+      parseTime(isoString){
+        const date = new Date(isoString);
+        
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        
+        const readableDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        console.log(readableDate); // "2023-04-08 20:05:03"
+        return readableDate
+      }
     },
     data() {
       return {

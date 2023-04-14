@@ -9,18 +9,15 @@
         <view class="search-box" v-if="showSearch">
           <input class="search-input" confirm-type="search" v-model="searchInput" placeholder="输入内容进行模糊查询"
             placeholder-style="color:rgba(102, 102, 102, 0.25);" />
-          <text v-if="showSearchBtn" class="search-text" @click="handleSearch"></text>
-          搜索
+          <text v-if="showSearchBtn" class="search-text" @click="handleSearch" style="color: #fff;">
+            搜索
           </text>
         </view>
-
         <view class="recommandPoint">
           <text style="left: 10px; color: #666; font-size: 15px; font-weight: bold;">猜你想去</text>
-          <view>
-            <block v-for="(item, index) in recommandList" :key="index">
-              <uni-tag :inverted="item.inverted" :text="item.name" type="primary" :circle="true" @click="recommandList[index].inverted = !recommandList[index].inverted" >
-              </uni-tag>
-            </block>
+          <view class="tag_container">
+            <zyTag v-for="(item,index) in recommendations" :text="item.attractionName" size="medium" circle="true"
+              v-bind:theme="item.checked===true?'dark':'plain'" @click="multiHandle(item,index)" />
           </view>
         </view>
 
@@ -53,6 +50,8 @@
 </template>
 
 <script>
+  import zyTag from '@/uni_modules/zy-tag/components/zy-tag/zy-tag.vue'
+  import userApi from '@/api/userApi.js'
   import {
     mapGetters,
     mapState,
@@ -61,37 +60,42 @@
 
   export default {
     name: 'zqsSelect',
+    components: {
+      zyTag
+    },
+    computed: {
+      ...mapState('m_roadMsg', ['allPointList']),
+    },
     data() {
       return {
-        inverted: true,
         type: "default",
         searchInput: '',
         options: [],
-        recommandList: [{
-            name: '三叠泉',
-            inverted: true,
-          },
-          {
-            name: '五老峰',
-            inverted: true,
-          },
-          {
-            name: '庐山植物园',
-            inverted: true,
-          },
-          {
-            name: '好运石',
-            inverted: true,
-          },
-          {
-            name: '仙人洞',
-            inverted: true,
-          },
-          {
-            name: '如琴湖',
-            inverted: true,
-          }
-        ]
+        recommendations: [],
+      }
+    },
+    created() {
+      // 在父组件的 created 生命周期钩子函数中等待子组件的创建完成
+      this.$nextTick(() => {
+        // 在回调函数中初始化数据
+        userApi.getRecommendation().then(res => {
+          this.recommendations = res
+          this.recommendations.forEach((item, index) => {
+            this.$set(this.recommendations[index], 'checked', false)
+          })
+        })
+      })
+    },
+    watch: {
+      searchInput(val) {
+        if (!this.$props.showSearchBtn) this.$emit('search', val)
+      },
+      recommendations: {
+        immediate: true, // 立即执行
+        deep: true, // 深度侦听复杂类型内变化
+        handler(newVal, oldVal) {
+          this.recommendations = newVal
+        }
       }
     },
     props: {
@@ -190,14 +194,11 @@
         },
       },
     },
-    created() {
-
-    },
     methods: {
       ...mapMutations('m_settings', ['updateIsShowModal']),
 
-      setType() {
-       this.inverted = !this.inverted;
+      multiHandle(item, index) {
+        this.recommendations[index].checked = !this.recommendations[index].checked
       },
       handleSearch() {
         this.$emit('search', this.searchInput)
@@ -290,6 +291,9 @@
         return item[this.valueKey]
       },
       empty() {
+        this.recommendations.forEach(item => {
+          item.checked = false
+        })
         // 清空
         if (this.multiple) {
           this.$emit('change', [])
@@ -304,11 +308,24 @@
       //   this.$emit('cancel', this._value)
       //   this.hideModal()
       // },
+
       confirmClick() {
+        this.recommendations.forEach(item => {
+          if (item.checked) {
+            const recom = this.options.find(res => res.id === item.attractionId)
+            if (recom === undefined) {
+              item.id = item.attractionId
+              this.options.push(item)
+            }
+          }
+        })
+        const ids = this.options.map(item => item.id)
+        const uniqueIds = ids.filter((id, index, self) => self.indexOf(id) === index) // 对新数组进行去重操作
         // 点击确定
-        if (this.valueType === 'all') {
-          this.$emit('confirm', this.options)
+        if (this.valueType !== 'all') {
+          this.$emit('confirm', uniqueIds)
         } else {
+          console.log(this._value);
           this.$emit('confirm', this._value)
         }
         this.hideModal()
@@ -328,11 +345,6 @@
         this.$emit('closeDeepScroll')
       },
     },
-    watch: {
-      searchInput(val) {
-        if (!this.$props.showSearchBtn) this.$emit('search', val)
-      },
-    },
   }
 </script>
 <style>
@@ -348,6 +360,14 @@
       /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
       url('//at.alicdn.com/t/font_1833441_ycfzdhg2u3.svg?t=1590375117208#selectIcon') format('svg');
     /* iOS 4.1- */
+  }
+
+  .tag_container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .recommandPoint {
@@ -535,6 +555,7 @@
   }
 
   .search-text {
+    color: #ffffff;
     padding-left: 30rpx;
   }
 </style>

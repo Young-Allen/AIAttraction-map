@@ -63,6 +63,17 @@
   height: 46.01rpx;
 }
 
+.title {
+  color: black;
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .paybak {
   opacity: 1;
   max-width: 220.86rpx;
@@ -94,6 +105,17 @@
   flex-direction: row;
   margin-top: 16.1rpx;
   height: 46.01rpx;
+}
+
+.opentime {
+  width: 350rpx;
+  color: #47a6ff;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .score {

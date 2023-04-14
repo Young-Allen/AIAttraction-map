@@ -23,7 +23,11 @@
       </view>
       <view class="list-item show-icon">
         <view class="list-item-left">兴趣</view>
-        <view class="list-item-right" v-for="(item, index) in user.interestTags">{{item.tagName}}</view>
+        <view class="list-item-right" style="padding: 10px 0px;">
+          <block v-for="(item, index) in user.interestTags">
+            <uni-tag :text="item.tagName" :type="types[index % 5]" />
+          </block>
+        </view>
       </view>
     </view>
 
@@ -36,6 +40,7 @@
   export default {
     data() {
       return {
+        types: ["default", "primary", "success", "warning", "error"],
         user: {}
       };
     },
@@ -123,7 +128,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 1px;
-      padding: 0 15px;
+      padding: 10px 15px;
       box-sizing: border-box;
       position: relative;
 
@@ -136,6 +141,8 @@
       }
 
       &.show-icon {
+        height: auto;
+
         &::after {
           content: '';
           position: absolute;

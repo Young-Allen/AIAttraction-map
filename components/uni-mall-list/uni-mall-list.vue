@@ -15,18 +15,19 @@
       </view>
     </view>
 
-    <!-- 输入框示例 -->
+    <!-- 输入框邀请码 -->
     <uni-popup ref="inputDialog" type="dialog">
       <uni-popup-dialog ref="inputClose" mode="input" title="请输入邀请码" value="" placeholder="邀请码"
         @confirm="dialogInputConfirm"></uni-popup-dialog>
     </uni-popup>
 
+
+    <!-- item.children && item.children.length ? 'box-list-item-department-icon' : '', -->
     <view class="box-list">
       <template v-for="item in currentData">
         <view class="box-list-item" :class="[
-						item.children && item.children.length ? 'box-list-item-department-icon' : '',
 						item.type === 'user' ? 'box-list-item-user' : 'box-list-item-department'
-					]" :key="item.id" @click="handelClickItem(item)">
+					]"  @click="handelClickItem(item)">
           <view class="box-list-item-department-pic" v-if="item.type === 'department'">
             <image src="~@/static/my-icons/department-icon.png"></image>
           </view>
@@ -52,8 +53,8 @@
 
 <script>
   import uniMallHead from '@/components/uni-mall-head/uni-mall-head.vue';
-   import tourgroupApi from '@/api/tourgroupApi.js'
-  
+  import tourgroupApi from '@/api/tourgroupApi.js'
+
 
   export default {
     components: {
@@ -70,7 +71,8 @@
       }
     },
     watch: {
-      dataList(newVal, oldVal){
+      dataList(newVal, oldVal) {
+        console.log(newVal);
         this.currentData = newVal
       }
     },
@@ -96,12 +98,12 @@
       dialogInputConfirm(val) {
         console.log(val);
         tourgroupApi.joinGroup(val).then(res => {
-            console.log(res);
+          console.log(res);
         })
         // 关闭窗口后，恢复默认内容
         this.$refs.inputDialog.close()
       },
-      
+
       //点击下拉栏的标签所执行的函数
       onClickPopMenu(item) {
         if (item.name === "加入群组") {
@@ -112,10 +114,10 @@
           })
         }
       },
-      
+
       //显示隐藏下拉栏
       isShowMenuPop() {
-        if(this.isShow === false)  return
+        if (this.isShow === false) return
         // 取消定时器
         clearTimeout(this.timerId);
         this.showMenuPop = !this.showMenuPop
@@ -125,8 +127,8 @@
           this.isShow = !this.isShow
         }, 3000);
       },
-      
-      
+
+
       init() {
         if (Object.keys(this.defaultHeadList).length > 0) {
           this.$refs.refUniMallHead.addTab(this.defaultHeadList);
@@ -137,15 +139,6 @@
         this.getCurrentData(obj.id, this.dataList);
       },
       handelClickItem(item) {
-        if (item.type === 'department') {
-          if (item.children && item.children.length > 0) {
-            this.$refs.refUniMallHead.addTab({
-              name: item.name,
-              id: item.id
-            });
-            this.currentData = item.children;
-          }
-        }
         this.$emit('change', item);
       },
       getUserName(name) {

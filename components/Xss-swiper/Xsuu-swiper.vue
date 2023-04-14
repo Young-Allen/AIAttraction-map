@@ -18,7 +18,7 @@
               :class="[index === enjoySiwper ? 'Subtitle' : '']">
               {{item.Subtitle}}
             </text>
-            <view class="Text-initialization" v-if="button === 1" :class="[index === enjoySiwper ? 'bt' : '']">
+            <view class="Text-initialization" v-if="button === 1" :class="[index === enjoySiwper ? 'bt' : '']" @click="clickSwiper(item.id)">
               <text class="bt-ico">去看看 ➜</text>
             </view>
           </view>
@@ -157,6 +157,10 @@
     methods: {
       swiperChange: function(e) {
         this.enjoySiwper = e.detail.current;
+      },
+      
+      clickSwiper(id){
+        this.$emit('clickSwiper', id);
       }
     }
   }

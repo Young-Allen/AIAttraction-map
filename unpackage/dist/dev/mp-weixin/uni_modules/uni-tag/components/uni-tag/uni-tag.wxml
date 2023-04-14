@@ -1,1 +1,1 @@
-<view style="display:inline-block;margin:5px 5px;" class="data-v-1516016e"><block wx:if="{{text}}"><text data-event-opts="{{[['tap',[['onClick',['$event']]]]]}}" class="{{['uni-tag','data-v-1516016e',classes]}}" style="{{(customStyle)}}" bindtap="__e">{{text}}</text></block></view>
+<view style="display:inline-block;margin:5px 5px;width:auto;" class="data-v-1516016e"><block wx:if="{{text}}"><text data-event-opts="{{[['tap',[['onClick',['$event']]]]]}}" class="{{['uni-tag','data-v-1516016e',classes]}}" style="{{(customStyle)}}" bindtap="__e">{{text}}</text></block></view>

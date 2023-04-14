@@ -21,6 +21,7 @@
     },
     filters: {
       parseTime(val) {
+        if(val === null)  return '';
         const options = { timeZone: 'Asia/Shanghai' }
         // 将空格替换为T，转换为ISO 8601格式
         const isoString = val.replace(' ', 'T')
@@ -30,20 +31,19 @@
       }
     },
     onLoad() {
-      // tourgroupApi.getGroupNotices().then(res => {
-      //   console.log(res);
-      //   for (var i = 0; i < res.data[0].length; i++) {
-      //     console.log(res.data[0][i]);
-      //     this.msgList.push(res.data[0][i])
-      //   }
-      //   console.log(this.msgList);
-      // })
+      tourgroupApi.getGroupNotices().then(res => {
+        console.log(res);
+        res.data[0].forEach(item => {
+          this.msgList.push(item)
+        })
+        console.log(this.msgList);
+      })
 
       //获取公告消息
       tourgroupApi.getNoticeList().then(res => {
-        for (var i = 0; i < res.data[0].length; i++) {
-          this.msgList.push(res.data[0][i])
-        }
+        res.data[0].forEach(item => {
+          this.msgList.push(item)
+        })
       })
     },
     methods: {}

@@ -8,7 +8,7 @@
       <view class="pageTab">
         <view class="lef" @click="pageTabML">
           <image src="~@/static/my-icons/addGroup.png" mode="" style="width: 30px;height: 30px;"></image>
-          <text style="font-size: 10px;">加团</text>
+          <text style="font-size: 10px;">群组</text>
         </view>
         <view class="mid">
           <view class="midmid" @click="pageTabMM">

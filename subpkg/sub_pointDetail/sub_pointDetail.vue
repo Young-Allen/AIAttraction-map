@@ -47,7 +47,9 @@
       </view>
       <view style="margin-bottom: 60px;">
         <uni-section title="景点介绍" type="line">
-          <text style="margin: 10px 10px;" user-select="true">{{attractionDetail.introduction}}</text>
+          <view style="padding:0 10px;">
+            <text style="margin: 10px 10px;" user-select="true">{{attractionDetail.introduction}}</text>
+          </view>
         </uni-section>
       </view>
 
@@ -171,6 +173,7 @@
         height: auto;
         width: 100%;
         border-bottom: 1px solid #d1d1d1;
+        padding: 10px 0px;
 
         .detail-title {
           color: #666;

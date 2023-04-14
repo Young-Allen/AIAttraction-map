@@ -1,0 +1,57 @@
+.zero-content.data-v-62c85190 {
+  overflow: hidden;
+}
+.loading-container.data-v-62c85190 {
+  width: 240rpx;
+  height: 240rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  z-index: 9;
+  -webkit-transform: translate(-50%, -55%);
+          transform: translate(-50%, -55%);
+}
+.loading-container .loading.data-v-62c85190 {
+  width: 100%;
+  height: 100%;
+  -webkit-animation: move-data-v-62c85190 1.2s linear infinite;
+          animation: move-data-v-62c85190 1.2s linear infinite;
+}
+.zero-lazy-item.data-v-62c85190 {
+  width: 100%;
+  -webkit-transform: transition3d(0, 0, 0);
+          transform: transition3d(0, 0, 0);
+  will-change: transform;
+  display: block;
+}
+.zero-lazy-item.error.data-v-62c85190 {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #f2f2f2;
+}
+.zero-lazy-item-loading.data-v-62c85190 {
+  background: url("") no-repeat center center;
+  background-size: 260rpx;
+}
+@-webkit-keyframes move-data-v-62c85190 {
+from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+}
+to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+}
+}
+@keyframes move-data-v-62c85190 {
+from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+}
+to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+}
+}
+

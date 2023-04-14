@@ -8,28 +8,36 @@
         <view class="user-info-text-top">{{groupInfo.name}}</view>
       </view>
     </view>
-    
+
     <view class="list">
-    	<view class="list-item">
-    		<view class="list-item-left">邀请码</view>
-    		<view class="list-item-right">{{groupInfo.inviteCode}}</view>
-    	</view>
-    	<view class="list-item">
-    		<view class="list-item-left">群容量</view>
-    		<view class="list-item-right">40/{{groupInfo.groupSize}}</view>
-    	</view>
-    	<view class="list-item show-icon">
-    		<view class="list-item-left">群简介</view>
-    		<view class="list-item-right">{{groupInfo.intro}}</view>
-    	</view>
+      <view class="list-item">
+        <view class="list-item-left">邀请码</view>
+        <view class="list-item-right">{{groupInfo.inviteCode}}</view>
+      </view>
+      <view class="list-item">
+        <view class="list-item-left">群容量</view>
+        <view class="list-item-right" v-if="groupInfo.groupSize !== null">40/{{groupInfo.groupSize}}</view>
+      </view>
+      <view class="list-item show-icon">
+        <view class="list-item-left">群简介</view>
+        <view class="list-item-right" v-if="groupInfo.intro !== null">{{groupInfo.intro}}</view>
+      </view>
     </view>
-    
-    <view class="list-btn-reject"><button type="button" @click="handleClickRej">解散群组</button></view>
+
+    <view class="list-btn-reject" v-if="creator.id === groupInfo.creator"><button type="button" @click="handleClickRej">解散群组</button></view>
   </view>
 </template>
 
 <script>
+  import {
+    mapState,
+    mapMutations
+  } from 'vuex'
+
   export default {
+    computed: {
+      ...mapState('m_group', ['creator']),
+    },
     data() {
       return {
         groupInfo: {}
@@ -41,7 +49,7 @@
       }
     },
     methods: {
-      handleClickRej(){
+      handleClickRej() {
         uni.showToast({
           title: '拒绝',
           duration: 2000
@@ -69,7 +77,6 @@
       align-items: center;
       justify-content: center;
       margin-right: 20px;
-      overflow: hidden;
 
       image {
         width: 60px;
@@ -118,6 +125,7 @@
 
       &.show-icon {
         height: auto;
+
         &::after {
           content: '';
           position: absolute;

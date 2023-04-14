@@ -5,7 +5,6 @@ const userApi = {
       code: code
     }
     const res = await uni.$http.post('/api/auth/wechatlogin', query)
-    console.log(res);
     return res.data
   },
 
@@ -25,6 +24,12 @@ const userApi = {
   //获取所有tags
   async getAllTags() {
     const res = await uni.$http.get('/api/user/allTag')
+    return res.data.data
+  },
+
+  //推送用户的兴趣
+  async getRecommendation(userinfo) {
+    const res = await uni.$http.get('/api/user/user-recommend')
     return res.data.data
   }
 }

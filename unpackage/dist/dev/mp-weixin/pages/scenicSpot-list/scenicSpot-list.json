@@ -6,7 +6,7 @@
   "backgroundColor": "#F8F8F8",
   "usingComponents": {
     "hx-navbar": "/uni_modules/hx-navbar/components/hx-navbar/hx-navbar",
-    "custom-waterfalls-flow": "/uni_modules/custom-waterfalls-flow/components/custom-waterfalls-flow/custom-waterfalls-flow",
+    "pp-waterfall-flow": "/uni_modules/pp-waterfall-flow/components/pp-waterfall-flow/pp-waterfall-flow",
     "tabbar": "/components/tabbar/tabbar"
   }
 }

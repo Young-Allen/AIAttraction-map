@@ -34,11 +34,14 @@
         staticRoad: {},
       }
     },
-    onLoad() {
-      uni.hideTabBar()
-      roadApi.getStaticRoadList(1).then(res => {
+    onReady() {
+      roadApi.getStaticRoadList(1, 10).then(res => {
+        console.log(res);
         this.staticRoad = res.data.data[0]
       })
+    },
+    onLoad() {
+      uni.hideTabBar()
     },
     onPageScroll(e) {
       // 重点，用到滑动切换必须加上

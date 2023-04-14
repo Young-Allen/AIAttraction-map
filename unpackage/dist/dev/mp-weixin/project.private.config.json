@@ -1,15 +1,16 @@
 {
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-  "projectname": "自定义tabbar，支持动画效果，凸起，角标，增加仿照微信下拉选项示例",
+  "projectname": "智慧景区自由行",
   "setting": {
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "urlCheck": true
   },
   "condition": {
     "miniprogram": {
       "list": [
         {
           "name": "",
-          "pathName": "subpkg/sub_addToGroup/sub_addToGroup",
+          "pathName": "pages/home/home",
           "query": "",
           "launchMode": "default",
           "scene": null

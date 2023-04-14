@@ -253,7 +253,7 @@ export default {
 			// 加载中禁止点击
 			if (this.isLoading) return;
 			if (this.select !== index) {
-				this.$emit('choose', {
+				this.$emit('chooseTab', {
 					index,
 					item
 				});

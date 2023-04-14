@@ -15,12 +15,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var objectKeys = ['qy', 'env', 'error', 'version', 'lanDebug', 'cloud', 'serviceMarket', 'router', 'worklet'];
+var singlePageDisableKey = ['lanDebug', 'router', 'worklet'];
 var target = typeof globalThis !== 'undefined' ? globalThis : function () {
   return this;
 }();
 var key = ['w', 'x'].join('');
 var oldWx = target[key];
+var launchOption = oldWx.getLaunchOptionsSync ? oldWx.getLaunchOptionsSync() : null;
 function isWxKey(key) {
+  if (launchOption && launchOption.scene === 1154 && singlePageDisableKey.includes(key)) {
+    return false;
+  }
   return objectKeys.indexOf(key) > -1 || typeof oldWx[key] === 'function';
 }
 function initWx() {
@@ -138,7 +143,35 @@ module.exports = _toPrimitive, module.exports.__esModule = true, module.exports[
 
 /***/ }),
 
-/***/ 149:
+/***/ 15:
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/construct.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ 16);
+var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ 17);
+function _construct(Parent, args, Class) {
+  if (isNativeReflectConstruct()) {
+    module.exports = _construct = Reflect.construct.bind(), module.exports.__esModule = true, module.exports["default"] = module.exports;
+  } else {
+    module.exports = _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Function.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) setPrototypeOf(instance, Class.prototype);
+      return instance;
+    }, module.exports.__esModule = true, module.exports["default"] = module.exports;
+  }
+  return _construct.apply(null, arguments);
+}
+module.exports = _construct, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ 150:
 /*!****************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/libs/utils.js ***!
   \****************************************************/
@@ -217,34 +250,6 @@ function StringToTime(time) {
   console.log(formattedDateTime); // 输出：2023-04-02 03:33:31
   return formattedDateTime;
 }
-
-/***/ }),
-
-/***/ 15:
-/*!**********************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/construct.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ 16);
-var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ 17);
-function _construct(Parent, args, Class) {
-  if (isNativeReflectConstruct()) {
-    module.exports = _construct = Reflect.construct.bind(), module.exports.__esModule = true, module.exports["default"] = module.exports;
-  } else {
-    module.exports = _construct = function _construct(Parent, args, Class) {
-      var a = [null];
-      a.push.apply(a, args);
-      var Constructor = Function.bind.apply(Parent, a);
-      var instance = new Constructor();
-      if (Class) setPrototypeOf(instance, Class.prototype);
-      return instance;
-    }, module.exports.__esModule = true, module.exports["default"] = module.exports;
-  }
-  return _construct.apply(null, arguments);
-}
-module.exports = _construct, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -637,7 +642,7 @@ var promiseInterceptor = {
     });
   }
 };
-var SYNC_API_RE = /^\$|Window$|WindowStyle$|sendHostEvent|sendNativeEvent|restoreGlobal|requireGlobal|getCurrentSubNVue|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64|getLocale|setLocale|invokePushCallback|getWindowInfo|getDeviceInfo|getAppBaseInfo|getSystemSetting|getAppAuthorizeSetting/;
+var SYNC_API_RE = /^\$|Window$|WindowStyle$|sendHostEvent|sendNativeEvent|restoreGlobal|requireGlobal|getCurrentSubNVue|getMenuButtonBoundingClientRect|^report|interceptors|Interceptor$|getSubNVueById|requireNativePlugin|upx2px|hideKeyboard|canIUse|^create|Sync$|Manager$|base64ToArrayBuffer|arrayBufferToBase64|getLocale|setLocale|invokePushCallback|getWindowInfo|getDeviceInfo|getAppBaseInfo|getSystemSetting|getAppAuthorizeSetting|initUTS|requireUTS|registerUTS/;
 var CONTEXT_API_RE = /^create|Manager$/;
 
 // Context例外情况
@@ -1017,6 +1022,8 @@ function populateParameters(result) {
     deviceOrientation = result.deviceOrientation;
   // const isQuickApp = "mp-weixin".indexOf('quickapp-webview') !== -1
 
+  var extraParam = {};
+
   // osName osVersion
   var osName = '';
   var osVersion = '';
@@ -1055,8 +1062,8 @@ function populateParameters(result) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "3.6.18",
-    uniRuntimeVersion: "3.6.18",
+    uniCompileVersion: "3.7.9",
+    uniRuntimeVersion: "3.7.9",
     uniPlatform: undefined || "mp-weixin",
     deviceBrand: deviceBrand,
     deviceModel: model,
@@ -1081,7 +1088,7 @@ function populateParameters(result) {
     browserName: undefined,
     browserVersion: undefined
   };
-  Object.assign(result, parameters);
+  Object.assign(result, parameters, extraParam);
 }
 function getGetDeviceType(result, model) {
   var deviceType = result.deviceType || 'phone';
@@ -1200,6 +1207,17 @@ var getAppAuthorizeSetting = {
 
 // import navigateTo from 'uni-helpers/navigate-to'
 
+var compressImage = {
+  args: function args(fromArgs) {
+    // https://developers.weixin.qq.com/community/develop/doc/000c08940c865011298e0a43256800?highLine=compressHeight
+    if (fromArgs.compressedHeight && !fromArgs.compressHeight) {
+      fromArgs.compressHeight = fromArgs.compressedHeight;
+    }
+    if (fromArgs.compressedWidth && !fromArgs.compressWidth) {
+      fromArgs.compressWidth = fromArgs.compressedWidth;
+    }
+  }
+};
 var protocols = {
   redirectTo: redirectTo,
   // navigateTo,  // 由于在微信开发者工具的页面参数，会显示__id__参数，因此暂时关闭mp-weixin对于navigateTo的AOP
@@ -1210,7 +1228,8 @@ var protocols = {
   getAppBaseInfo: getAppBaseInfo,
   getDeviceInfo: getDeviceInfo,
   getWindowInfo: getWindowInfo,
-  getAppAuthorizeSetting: getAppAuthorizeSetting
+  getAppAuthorizeSetting: getAppAuthorizeSetting,
+  compressImage: compressImage
 };
 var todos = ['vibrate', 'preloadPage', 'unPreloadPage', 'loadSubPackage'];
 var canIUses = [];
@@ -1643,6 +1662,19 @@ function toSkip(obj) {
   }
   return obj;
 }
+var WORKLET_RE = /_(.*)_worklet_factory_/;
+function initWorkletMethods(mpMethods, vueMethods) {
+  if (vueMethods) {
+    Object.keys(vueMethods).forEach(function (name) {
+      var matches = name.match(WORKLET_RE);
+      if (matches) {
+        var workletName = matches[1];
+        mpMethods[name] = vueMethods[name];
+        mpMethods[workletName] = vueMethods[workletName];
+      }
+    });
+  }
+}
 var MPPage = Page;
 var MPComponent = Component;
 var customizeRE = /:/g;
@@ -1807,7 +1839,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2528,6 +2560,9 @@ function parseBasePage(vuePageOptions) {
   };
   {
     initUnknownHooks(pageOptions.methods, vuePageOptions, ['onReady']);
+  }
+  {
+    initWorkletMethods(pageOptions.methods, vueOptions.methods);
   }
   return pageOptions;
 }
@@ -8827,7 +8862,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8848,14 +8883,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8951,7 +8986,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"智慧景区自由行","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9380,7 +9415,7 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 279:
+/***/ 280:
 /*!******************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \******************************************************************************************/
@@ -10433,7 +10468,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 303:
+/***/ 304:
 /*!******************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-popup/components/uni-popup/popup.js ***!
   \******************************************************************************************/
@@ -10475,7 +10510,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 304:
+/***/ 305:
 /*!***********************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-popup/components/uni-popup/i18n/index.js ***!
   \***********************************************************************************************/
@@ -10490,9 +10525,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 305));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 306));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 307));
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 306));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 307));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 308));
 var _default = {
   en: _en.default,
   'zh-Hans': _zhHans.default,
@@ -10502,7 +10537,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 305:
+/***/ 306:
 /*!**********************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-popup/components/uni-popup/i18n/en.json ***!
   \**********************************************************************************************/
@@ -10513,7 +10548,7 @@ module.exports = JSON.parse("{\"uni-popup.cancel\":\"cancel\",\"uni-popup.ok\":\
 
 /***/ }),
 
-/***/ 306:
+/***/ 307:
 /*!***************************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-popup/components/uni-popup/i18n/zh-Hans.json ***!
   \***************************************************************************************************/
@@ -10524,7 +10559,7 @@ module.exports = JSON.parse("{\"uni-popup.cancel\":\"取消\",\"uni-popup.ok\":\
 
 /***/ }),
 
-/***/ 307:
+/***/ 308:
 /*!***************************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-popup/components/uni-popup/i18n/zh-Hant.json ***!
   \***************************************************************************************************/
@@ -10582,6 +10617,9 @@ function normalizeComponent (
   }
   // fixed by xxxxxx renderjs
   if (renderjs) {
+    if(typeof renderjs.beforeCreate === 'function'){
+			renderjs.beforeCreate = [renderjs.beforeCreate]
+		}
     (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
       this[renderjs.__module] = this
     });
@@ -10684,6 +10722,7 @@ var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 34));
 var _user = _interopRequireDefault(__webpack_require__(/*! ./user.js */ 35));
 var _roadMsg = _interopRequireDefault(__webpack_require__(/*! ./roadMsg.js */ 36));
 var _settings = _interopRequireDefault(__webpack_require__(/*! ./settings.js */ 37));
+var _group = _interopRequireDefault(__webpack_require__(/*! ./group.js */ 38));
 // 1. 导入 Vue 和 Vuex
 
 // 导入用户的 vuex 模块
@@ -10698,7 +10737,8 @@ var store = new _vuex.default.Store({
     // 挂载用户的 vuex 模块，访问路径为 m_user
     m_user: _user.default,
     m_roadMsg: _roadMsg.default,
-    m_settings: _settings.default
+    m_settings: _settings.default,
+    m_group: _group.default
   }
 });
 
@@ -12053,147 +12093,16 @@ var _default = {
       // 当前线路的当前景点下标
       activePoint: 0,
       //所有的景点信息
-      allPointList: [{
-        id: 0,
-        name: '三叠泉',
-        latitude: '29.55527',
-        longitude: '116.043974',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/9f56dfa0b736bd2b4d2b1540167e42ac,http://store.is.autonavi.com/showpic/c74bc6907048a7db9dc2ae47ae99eb0d,http://store.is.autonavi.com/showpic/abf0063f65ef46f33444f5b13143d60f',
-        score: '4.8'
-      }, {
-        id: 1,
-        name: '五老峰',
-        latitude: '29.544069',
-        longitude: '116.021780',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/e7088b4d591679a9a432cbd9db300461,http://store.is.autonavi.com/showpic/f0de68280cb4a0b349029e937f59c1bd,http://store.is.autonavi.com/showpic/d425dcf8bddb8dc64d03cd80107e14d5',
-        score: '4.6'
-      }, {
-        id: 2,
-        name: '庐山植物园',
-        latitude: '29.546914',
-        longitude: '115.986702',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/2accc6ddd57ff82f9f7e46958f319656,http://store.is.autonavi.com/showpic/cb760320cc0780810e2b59e1aa517c3b,http://store.is.autonavi.com/showpic/299ee8fea9a493d6cf7e2b6df8ba4c6b',
-        score: '4.5'
-      }, {
-        id: 3,
-        name: '庐山博物馆',
-        latitude: '29.55075',
-        longitude: '115.9779',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/ee127b9af3b703194ba6a3e88ef77b4e,http://store.is.autonavi.com/showpic/7fc218a0d6e8124e2df086d1b2b5a071,http://store.is.autonavi.com/showpic/071082135a00b053d202804c2055d001',
-        score: '4.6'
-      }, {
-        id: 4,
-        name: '芦林湖',
-        latitude: '29.54993',
-        longitude: '115.9744',
-        imgsUrl: 'http://aos-cdn-image.amap.com/sns/ugccomment/2ddf8c4d-8894-43e0-b7c7-05e9bc5c290f.jpg,http://store.is.autonavi.com/showpic/84f605a68f4803f84573a6f35c1ef062',
-        score: '4.5'
-      }, {
-        id: 5,
-        name: '黄龙寺',
-        latitude: '29.55064',
-        longitude: '115.9682',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/6f6659ab26860f5ee44160766e670af6,http://aos-cdn-image.amap.com/sns/ugccomment/65597f9e-5056-4238-9e19-f0065c6ecd58.jpg,http://store.is.autonavi.com/showpic/ad3d7b78286905b27bdda0a3c4d57398',
-        score: '4.3'
-      }, {
-        id: 6,
-        name: '黄龙潭',
-        latitude: '29.55112',
-        longitude: '115.9634',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/88e700c88f85537f6e19683a9b6a0ce1,http://store.is.autonavi.com/showpic/1ae70f5cc01ecc0cc58f9eed11f19d5e,http://store.is.autonavi.com/showpic/08deb0c1bdf2c81806f9d0807db356bd',
-        score: '4.3'
-      }, {
-        id: 7,
-        name: '庐山大坝',
-        latitude: '29.55134',
-        longitude: '115.9602',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/d3de57d79aba120507244b011251f746,http://store.is.autonavi.com/showpic/c4f1c45476a1775dccc867675e033e1c',
-        score: '4.1'
-      }, {
-        id: 8,
-        name: '大天池',
-        latitude: '29.5576',
-        longitude: '115.9559',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/0a6746e142f3b02293d6c5fb1e7ac8aa,http://store.is.autonavi.com/showpic/80d94f50a23e0aa1e3228db5254e98e8,http://store.is.autonavi.com/showpic/9c38854cb7d23ef976e123bc344768d7',
-        score: '4.5'
-      }, {
-        id: 9,
-        name: '天池塔',
-        latitude: '29.55947',
-        longitude: '115.956',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/83f1838ddb4242e0a2c2c27612858a18,http://store.is.autonavi.com/showpic/4e96345968c143f888f63f33892cd27d,http://store.is.autonavi.com/showpic/5462f636a3c84a0bb1b71b2de2ba37bd',
-        score: '4.1'
-      }, {
-        id: 10,
-        name: '仙人洞',
-        latitude: '29.56208',
-        longitude: '115.9626',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/7292e19d24ca38e0605933ecb5b0a8b9,http://store.is.autonavi.com/showpic/faed0159b69c30d55e3b5c7ce025a3b4,http://store.is.autonavi.com/showpic/6ae01b37513afd096621e6f42051785f',
-        score: '4.7'
-      }, {
-        id: 11,
-        name: '礼贤门',
-        latitude: '29.56385',
-        longitude: '115.9637',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/88e700c88f85537f6e19683a9b6a0ce1,http://store.is.autonavi.com/showpic/1ae70f5cc01ecc0cc58f9eed11f19d5e,http://store.is.autonavi.com/showpic/08deb0c1bdf2c81806f9d0807db356bd',
-        score: '3.1'
-      }, {
-        id: 12,
-        name: '好运石',
-        latitude: '29.56703',
-        longitude: '115.9685',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/8198e205d6ad5a2d229a99f762ec0d30,http://store.is.autonavi.com/showpic/2e09d650bce4a53423bc071d8bcada27,http://store.is.autonavi.com/showpic/6f552521cb719cee83bfb2cd6420ab47',
-        score: '4.3'
-      }, {
-        id: 13,
-        name: '白居易草堂',
-        latitude: '29.56474',
-        longitude: '115.9674',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/62d0e593c10cd09c79d43d843f76def4,http://store.is.autonavi.com/showpic/3df6fc1ac12e78ad71d2ecdb07c02883,http://store.is.autonavi.com/showpic/d2b17d2b0aaf10d500a6f69970af234f',
-        score: '4.5'
-      }, {
-        id: 14,
-        name: '如琴湖',
-        latitude: '29.56589',
-        longitude: '115.971',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/7190afebc21b963119417c51daf888ba,https://aos-comment.amap.com/B0FFH027GK/headerImg/8b861c8d18ecc320d703a0f9bb850dea_2048_2048_80.jpg,https://aos-comment.amap.com/B0FFH027GK/headerImg/62faaedcc9d6094446ce3fcec8acf82a_2048_2048_80.jpg',
-        score: '4.6'
-      }, {
-        id: 15,
-        name: '庐山牯岭街心公园',
-        latitude: '29.56897',
-        longitude: '115.9842',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/a80875d916b64223a1dfdf5c131e3928,http://store.is.autonavi.com/showpic/d7d4b4b70b62493abc6e0b6771f29935,http://store.is.autonavi.com/showpic/32f413e4d19a4e0d9dae0ead6d2bce6a',
-        score: '4.5'
-      }, {
-        id: 16,
-        name: '美庐别墅',
-        latitude: '29.56429',
-        longitude: '115.9835',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/ff8347ba48a1ab8518d715b84c33aec1,http://store.is.autonavi.com/showpic/16266f55eb6a7a8ff37449438ebb0c6b,http://store.is.autonavi.com/showpic/839a4c90930e4491ecb35d0012ce1eea',
-        score: '4.6'
-      }, {
-        id: 17,
-        name: '283教堂',
-        latitude: '29.56114',
-        longitude: '115.9819',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/92c4db03cad29fdc2fc5d5937b2e0159',
-        score: '4'
-      }, {
-        id: 18,
-        name: '朱德旧居',
-        latitude: '29.55808',
-        longitude: '115.9793',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/8b7f1c5805730ed5708de7587e5ed228,http://store.is.autonavi.com/showpic/17c55ee41e4cd87c6d5ae95ba7324c1f,http://store.is.autonavi.com/showpic/94a63893b637943851364b56d7675e04',
-        score: '4'
-      }, {
-        id: 19,
-        name: '中国共产党中央委员会庐山会议旧址',
-        latitude: '29.55906',
-        longitude: '115.9771',
-        imgsUrl: 'http://store.is.autonavi.com/showpic/35c31171fd5460838763c47a63a4317d,http://store.is.autonavi.com/showpic/2c55fa447b1dd4cffc11b9c4c22079fc,http://aos-cdn-image.amap.com/sns/ugccomment/17fa9e73-a9b1-4688-86a1-e5dcae90db52.jpg',
-        score: '4.6'
-      }],
+      allPointList: JSON.parse(uni.getStorageSync('allPointList') || '[]'),
+      // {
+      //       id: 0,
+      //       name: '三叠泉',
+      //       latitude: '29.55527',
+      //       longitude: '116.043974',
+      //       imgsUrl: 'http://store.is.autonavi.com/showpic/9f56dfa0b736bd2b4d2b1540167e42ac,http://store.is.autonavi.com/showpic/c74bc6907048a7db9dc2ae47ae99eb0d,http://store.is.autonavi.com/showpic/abf0063f65ef46f33444f5b13143d60f',
+      //       score: '4.8',
+      //     }
+
       //静态路线信息
       road: [{
         roadId: 0,
@@ -12271,6 +12180,14 @@ var _default = {
       // 持久化到本地
       this.commit('m_roadMsg/saveActivePointToStorage');
     },
+    saveAllPointsToStorage: function saveAllPointsToStorage(state) {
+      uni.setStorageSync('allPointList', JSON.stringify(state.allPointList));
+    },
+    updateAllPoints: function updateAllPoints(state, e) {
+      state.allPointList = e;
+      // 持久化到本地
+      this.commit('m_roadMsg/saveAllPointsToStorage');
+    },
     savePointListToStorage: function savePointListToStorage(state) {
       uni.setStorageSync('pointList', state.pointList);
     },
@@ -12323,23 +12240,39 @@ var _default = {
     return {
       //是否显示地图界面的筛选模态框
       isShowModal: 'false',
-      roadContent: [{
-        iconPath: '/static/my-icons/default.png',
-        selectedIconPath: '/static/my-icons/default-select.png',
-        text: '默认线路',
-        active: false
+      headNavi: ['景点', '住宿餐饮', '景区服务中心', '医疗急救'],
+      //自定义图层信息
+      GroundOverlay: [{
+        id: 1,
+        src: "https://i.328888.xyz/2023/03/25/iAjKKQ.png",
+        bounds: {
+          //左下经纬度
+          southwest: {
+            longitude: 115.955964,
+            latitude: 29.493921
+          },
+          //右上经纬度
+          northeast: {
+            longitude: 116.055004,
+            latitude: 29.576550
+          }
+        }
       }, {
-        iconPath: '/static/my-icons/dynamic.png',
-        selectedIconPath: '/static/my-icons/dynamic-select.png',
-        text: '动态线路',
-        active: false
-      }, {
-        iconPath: '/static/my-icons/vip-road.png',
-        selectedIconPath: '/static/my-icons/vip-road-select.png',
-        text: '精品线路',
-        active: false
-      }],
-      headNavi: ['景点', '餐饮住宿', '景区服务中心', '医院']
+        id: 2,
+        src: "https://www.hualigs.cn/image/643598e529a5d.jpg",
+        bounds: {
+          //左下经纬度
+          southwest: {
+            longitude: 115.879179,
+            latitude: 29.493921
+          },
+          //右上经纬度
+          northeast: {
+            longitude: 115.955964,
+            latitude: 29.576550
+          }
+        }
+      }]
     };
   },
   // 方法
@@ -12366,6 +12299,107 @@ exports.default = _default;
 /***/ }),
 
 /***/ 38:
+/*!*****************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/store/group.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  // 开启命名空间
+  namespaced: true,
+  // state 数据
+  state: function state() {
+    return {
+      // 用户的基本信息
+      creator: JSON.parse(uni.getStorageSync('creator') || '{}')
+    };
+  },
+  mutations: {
+    saveCreatorToStorage: function saveCreatorToStorage(state) {
+      uni.setStorageSync('creator', JSON.stringify(state.creator));
+    },
+    updateCreator: function updateCreator(state, creator) {
+      state.creator = creator;
+      this.commit('m_group/saveCreatorToStorage');
+    }
+  },
+  // 数据包装器
+  getters: {}
+};
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+
+/***/ }),
+
+/***/ 386:
+/*!*********************************************************************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/index.js ***!
+  \*********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 387));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 388));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 389));
+var _default = {
+  en: _en.default,
+  'zh-Hans': _zhHans.default,
+  'zh-Hant': _zhHant.default
+};
+exports.default = _default;
+
+/***/ }),
+
+/***/ 387:
+/*!********************************************************************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/en.json ***!
+  \********************************************************************************************************/
+/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"Search enter content\"}");
+
+/***/ }),
+
+/***/ 388:
+/*!*************************************************************************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hans.json ***!
+  \*************************************************************************************************************/
+/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"请输入搜索内容\"}");
+
+/***/ }),
+
+/***/ 389:
+/*!*************************************************************************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hant.json ***!
+  \*************************************************************************************************************/
+/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"請輸入搜索內容\"}");
+
+/***/ }),
+
+/***/ 39:
 /*!*********************************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/node_modules/@escook/request-miniprogram/miniprogram_dist/index.js ***!
   \*********************************************************************************************************/
@@ -12477,66 +12511,6 @@ exports.$http = $http;
 
 /***/ }),
 
-/***/ 385:
-/*!*********************************************************************************************************!*\
-  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/index.js ***!
-  \*********************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 386));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 387));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 388));
-var _default = {
-  en: _en.default,
-  'zh-Hans': _zhHans.default,
-  'zh-Hant': _zhHant.default
-};
-exports.default = _default;
-
-/***/ }),
-
-/***/ 386:
-/*!********************************************************************************************************!*\
-  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/en.json ***!
-  \********************************************************************************************************/
-/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"Search enter content\"}");
-
-/***/ }),
-
-/***/ 387:
-/*!*************************************************************************************************************!*\
-  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hans.json ***!
-  \*************************************************************************************************************/
-/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"请输入搜索内容\"}");
-
-/***/ }),
-
-/***/ 388:
-/*!*************************************************************************************************************!*\
-  !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hant.json ***!
-  \*************************************************************************************************************/
-/*! exports provided: uni-search-bar.cancel, uni-search-bar.placeholder, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"請輸入搜索內容\"}");
-
-/***/ }),
-
 /***/ 4:
 /*!**********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
@@ -12553,7 +12527,7 @@ module.exports = _interopRequireDefault, module.exports.__esModule = true, modul
 
 /***/ }),
 
-/***/ 410:
+/***/ 411:
 /*!*******************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/components/drag-ball/ball.js ***!
   \*******************************************************************/
@@ -12568,7 +12542,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _ball = _interopRequireDefault(__webpack_require__(/*! ./ball.js */ 410));
+var _ball = _interopRequireDefault(__webpack_require__(/*! ./ball.js */ 411));
 var list = [];
 var boundary = [[], []];
 function getDistance(x_1, y_1, x_2, y_2) {
@@ -12635,7 +12609,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 418:
+/***/ 419:
 /*!*********************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-forms/components/uni-forms/validate.js ***!
   \*********************************************************************************************/
@@ -12650,11 +12624,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ 419));
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ 420));
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ 422));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ 420));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ 421));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ 423));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ 23));
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ 24));
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ 13));
@@ -13327,7 +13301,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 419:
+/***/ 420:
 /*!*********************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/inherits.js ***!
   \*********************************************************/
@@ -13355,7 +13329,7 @@ module.exports = _inherits, module.exports.__esModule = true, module.exports["de
 
 /***/ }),
 
-/***/ 420:
+/***/ 421:
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
   \**************************************************************************/
@@ -13363,7 +13337,7 @@ module.exports = _inherits, module.exports.__esModule = true, module.exports["de
 /***/ (function(module, exports, __webpack_require__) {
 
 var _typeof = __webpack_require__(/*! ./typeof.js */ 13)["default"];
-var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ 421);
+var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ 422);
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
@@ -13376,7 +13350,7 @@ module.exports = _possibleConstructorReturn, module.exports.__esModule = true, m
 
 /***/ }),
 
-/***/ 421:
+/***/ 422:
 /*!**********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
   \**********************************************************************/
@@ -13393,7 +13367,7 @@ module.exports = _assertThisInitialized, module.exports.__esModule = true, modul
 
 /***/ }),
 
-/***/ 422:
+/***/ 423:
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/getPrototypeOf.js ***!
   \***************************************************************/
@@ -13410,7 +13384,7 @@ module.exports = _getPrototypeOf, module.exports.__esModule = true, module.expor
 
 /***/ }),
 
-/***/ 423:
+/***/ 424:
 /*!******************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-forms/components/uni-forms/utils.js ***!
   \******************************************************************************************/
@@ -13746,7 +13720,7 @@ exports.isEqual = isEqual;
 
 /***/ }),
 
-/***/ 438:
+/***/ 439:
 /*!**************************************************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/uni_modules/uni-transition/components/uni-transition/createAnimation.js ***!
   \**************************************************************************************************************/
@@ -13880,7 +13854,7 @@ function createAnimation(option, _this) {
 
 /***/ }),
 
-/***/ 45:
+/***/ 46:
 /*!*****************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/api/userApi.js ***!
   \*****************************************************/
@@ -13895,8 +13869,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
 var userApi = {
   //登录获取token
   wechatLogin: function wechatLogin(code) {
@@ -13913,9 +13887,8 @@ var userApi = {
               return uni.$http.post('/api/auth/wechatlogin', query);
             case 3:
               res = _context.sent;
-              console.log(res);
               return _context.abrupt("return", res.data);
-            case 6:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -13986,6 +13959,27 @@ var userApi = {
         }
       }, _callee4);
     }))();
+  },
+  //推送用户的兴趣
+  getRecommendation: function getRecommendation(userinfo) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5() {
+      var res;
+      return _regenerator.default.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return uni.$http.get('/api/user/user-recommend');
+            case 2:
+              res = _context5.sent;
+              return _context5.abrupt("return", res.data.data);
+            case 4:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }))();
   }
 };
 var _default = userApi;
@@ -13994,7 +13988,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 46:
+/***/ 47:
 /*!************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/@babel/runtime/regenerator/index.js ***!
   \************************************************************************************************/
@@ -14003,12 +13997,12 @@ exports.default = _default;
 
 // TODO(Babel 8): Remove this file.
 
-var runtime = __webpack_require__(/*! @babel/runtime/helpers/regeneratorRuntime */ 47)();
+var runtime = __webpack_require__(/*! @babel/runtime/helpers/regeneratorRuntime */ 48)();
 module.exports = runtime;
 
 /***/ }),
 
-/***/ 47:
+/***/ 48:
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/regeneratorRuntime.js ***!
   \*******************************************************************/
@@ -14330,7 +14324,7 @@ module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.e
 
 /***/ }),
 
-/***/ 48:
+/***/ 49:
 /*!*****************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
   \*****************************************************************/
@@ -14371,7 +14365,25 @@ module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exp
 
 /***/ }),
 
-/***/ 49:
+/***/ 5:
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/slicedToArray.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ 6);
+var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ 7);
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ 8);
+var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ 10);
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
+}
+module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ 50:
 /*!********************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/api/articleApi.js ***!
   \********************************************************/
@@ -14386,8 +14398,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
 var articleApi = {
   //获取热门攻略
   getArticleList: function getArticleList() {
@@ -14443,25 +14455,7 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ 5:
-/*!**************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/slicedToArray.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ 6);
-var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ 7);
-var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ 8);
-var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ 10);
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
-}
-module.exports = _slicedToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ 50:
+/***/ 51:
 /*!*****************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/api/roadApi.js ***!
   \*****************************************************/
@@ -14476,11 +14470,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
 var roadApi = {
   //获取静态线路
-  getStaticRoadList: function getStaticRoadList(pagenum) {
+  getStaticRoadList: function getStaticRoadList(currentPage, pageSize) {
     return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
       var query, res;
       return _regenerator.default.wrap(function _callee$(_context) {
@@ -14488,11 +14482,11 @@ var roadApi = {
           switch (_context.prev = _context.next) {
             case 0:
               query = {
-                pageSize: 10,
-                currentPage: pagenum
+                pageSize: pageSize,
+                currentPage: currentPage
               };
               _context.next = 3;
-              return uni.$http.get('/route/all', query);
+              return uni.$http.get('/route/static/all', query);
             case 3:
               res = _context.sent;
               return _context.abrupt("return", res.data);
@@ -14513,7 +14507,7 @@ var roadApi = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return uni.$http.get("/route/".concat(id));
+              return uni.$http.get("/route/static/".concat(id));
             case 2:
               res = _context2.sent;
               return _context2.abrupt("return", res.data);
@@ -14523,6 +14517,53 @@ var roadApi = {
           }
         }
       }, _callee2);
+    }))();
+  },
+  //获取群组路线
+  getVipRoad: function getVipRoad(attractionIds) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
+      var res;
+      return _regenerator.default.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return uni.$http.post('/route/walking/multiple', attractionIds);
+            case 2:
+              res = _context3.sent;
+              return _context3.abrupt("return", res.data);
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  //获取动态路线
+  pathToSingleSource: function pathToSingleSource(longitude, latitude, target) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
+      var query, res;
+      return _regenerator.default.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              query = {
+                longitude: parseFloat(longitude.toFixed(6)),
+                latitude: parseFloat(latitude.toFixed(6)),
+                target: target
+              };
+              _context4.next = 3;
+              return uni.$http.post('/route/walking/single-source', query);
+            case 3:
+              res = _context4.sent;
+              return _context4.abrupt("return", res.data);
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
     }))();
   }
 };
@@ -14546,7 +14587,7 @@ module.exports = _arrayWithHoles, module.exports.__esModule = true, module.expor
 
 /***/ }),
 
-/***/ 67:
+/***/ 68:
 /*!********************************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/components/sn-swiper/esc-swiper/helper.js ***!
   \********************************************************************************/
@@ -14587,7 +14628,215 @@ function getSwiperList(list) {
 
 /***/ }),
 
-/***/ 68:
+/***/ 69:
+/*!***********************************************************!*\
+  !*** F:/Studying Code/小程序/uni-map02/api/attractionApi.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
+var attractionApi = {
+  //景点数组
+  getAttractionList: function getAttractionList(currentPage, pageSize) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var query, res;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              query = {
+                pageSize: pageSize,
+                currentPage: currentPage
+              };
+              _context.next = 3;
+              return uni.$http.post('/api/attraction/all', query);
+            case 3:
+              res = _context.sent;
+              return _context.abrupt("return", res.data.data);
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  //根据景点名称模糊搜索景点
+  getAttractionByName: function getAttractionByName(name, currentPage, pageSize) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
+      var query, res;
+      return _regenerator.default.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              query = {
+                pageSize: pageSize,
+                currentPage: currentPage,
+                name: name
+              };
+              _context2.next = 3;
+              return uni.$http.post('/api/attraction/all', query);
+            case 3:
+              res = _context2.sent;
+              return _context2.abrupt("return", res.data.data);
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  //根据id获取景点信息
+  getAttractionListById: function getAttractionListById(id) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
+      var res;
+      return _regenerator.default.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return uni.$http.get("/api/attraction/".concat(id));
+            case 2:
+              res = _context3.sent;
+              return _context3.abrupt("return", res.data);
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  //评价景点
+  addNewScore: function addNewScore(id, score) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
+      var query, res;
+      return _regenerator.default.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              query = {
+                id: id,
+                score: score
+              };
+              _context4.next = 3;
+              return uni.$http.post('/rating/new', query);
+            case 3:
+              res = _context4.sent;
+              return _context4.abrupt("return", res.data);
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  },
+  //获取景点的实时人数
+  getDynamicAttractionInfo: function getDynamicAttractionInfo() {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5() {
+      var res;
+      return _regenerator.default.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return uni.$http.get('/api/attraction/dynamic/info');
+            case 2:
+              res = _context5.sent;
+              return _context5.abrupt("return", res.data);
+            case 4:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }))();
+  },
+  //获取距离用户3公里内距离最近的一个景点
+  matchFuzzyPosition: function matchFuzzyPosition(lat, lng) {
+    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
+      var query, res;
+      return _regenerator.default.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              query = {
+                lat: lat,
+                lng: lng
+              };
+              _context6.next = 3;
+              return uni.$http.get('/api/showplace/fuzzyposition', query);
+            case 3:
+              res = _context6.sent;
+              return _context6.abrupt("return", res.data);
+            case 5:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6);
+    }))();
+  }
+};
+var _default = attractionApi;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+
+/***/ }),
+
+/***/ 7:
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _iterableToArrayLimit(arr, i) {
+  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+  if (null != _i) {
+    var _s,
+      _e,
+      _x,
+      _r,
+      _arr = [],
+      _n = !0,
+      _d = !1;
+    try {
+      if (_x = (_i = _i.call(arr)).next, 0 === i) {
+        if (Object(_i) !== _i) return;
+        _n = !1;
+      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) {
+        ;
+      }
+    } catch (err) {
+      _d = !0, _e = err;
+    } finally {
+      try {
+        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+    return _arr;
+  }
+}
+module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ 70:
 /*!*************************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/libs/qqmap-wx-jssdk.js ***!
   \*************************************************************/
@@ -15697,143 +15946,6 @@ module.exports = QQMapWX;
 
 /***/ }),
 
-/***/ 7:
-/*!*********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
-  if (null != _i) {
-    var _s,
-      _e,
-      _x,
-      _r,
-      _arr = [],
-      _n = !0,
-      _d = !1;
-    try {
-      if (_x = (_i = _i.call(arr)).next, 0 === i) {
-        if (Object(_i) !== _i) return;
-        _n = !1;
-      } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) {
-        ;
-      }
-    } catch (err) {
-      _d = !0, _e = err;
-    } finally {
-      try {
-        if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return;
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-    return _arr;
-  }
-}
-module.exports = _iterableToArrayLimit, module.exports.__esModule = true, module.exports["default"] = module.exports;
-
-/***/ }),
-
-/***/ 77:
-/*!***********************************************************!*\
-  !*** F:/Studying Code/小程序/uni-map02/api/attractionApi.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
-var attractionApi = {
-  //景点数组
-  getAttractionList: function getAttractionList(pagenum) {
-    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-      var query, res;
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              query = {
-                pageSize: 5,
-                currentPage: pagenum
-              };
-              _context.next = 3;
-              return uni.$http.post('/api/attraction/all', query);
-            case 3:
-              res = _context.sent;
-              return _context.abrupt("return", res.data.data);
-            case 5:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  //根据景点名称模糊搜索景点
-  getAttractionByName: function getAttractionByName(name, pagenum) {
-    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-      var query, res;
-      return _regenerator.default.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              query = {
-                pageSize: 5,
-                currentPage: pagenum,
-                name: name
-              };
-              _context2.next = 3;
-              return uni.$http.get('/api/attraction/search', query);
-            case 3:
-              res = _context2.sent;
-              return _context2.abrupt("return", res.data.data);
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  //根据id获取景点信息
-  getAttractionListById: function getAttractionListById(id) {
-    return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
-      var res;
-      return _regenerator.default.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return uni.$http.get("/api/attraction/".concat(id));
-            case 2:
-              res = _context3.sent;
-              return _context3.abrupt("return", res.data);
-            case 4:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  }
-};
-var _default = attractionApi;
-exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
-
-/***/ }),
-
 /***/ 8:
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
@@ -15872,7 +15984,7 @@ module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exp
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /*!**********************************************************!*\
   !*** F:/Studying Code/小程序/uni-map02/api/tourgroupApi.js ***!
   \**********************************************************/
@@ -15887,8 +15999,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 46));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 48));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 47));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 49));
 var tourgroupApi = {
   //创建群组
   createGroup: function createGroup(datas) {
@@ -16052,21 +16164,25 @@ var tourgroupApi = {
   //发送群组消息
   publishGroupNotice: function publishGroupNotice(subject, content) {
     return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee8() {
-      var query, res;
+      var date, isoString, query, res;
       return _regenerator.default.wrap(function _callee8$(_context8) {
         while (1) {
           switch (_context8.prev = _context8.next) {
             case 0:
+              date = new Date();
+              isoString = date.toISOString();
               query = {
                 subject: subject,
-                content: content
+                content: content,
+                publishTime: isoString,
+                type: '一般事件'
               };
-              _context8.next = 3;
+              _context8.next = 5;
               return uni.$http.post('/notice/group-publish', query);
-            case 3:
+            case 5:
               res = _context8.sent;
               return _context8.abrupt("return", res.data.data);
-            case 5:
+            case 7:
             case "end":
               return _context8.stop();
           }

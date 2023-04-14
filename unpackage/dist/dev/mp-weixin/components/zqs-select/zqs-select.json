@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "uni-tag": "/uni_modules/uni-tag/components/uni-tag/uni-tag"
+    "zy-tag": "/uni_modules/zy-tag/components/zy-tag/zy-tag"
   },
   "component": true
 }

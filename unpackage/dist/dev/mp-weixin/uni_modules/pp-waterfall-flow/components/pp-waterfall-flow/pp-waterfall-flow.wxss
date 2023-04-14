@@ -1,0 +1,40 @@
+.waterfall-flow.data-v-7b8d87e2 {
+  display: grid;
+  grid-template-columns: repeat(var(--col), 1fr);
+  grid-template-rows: repeat(auto-fill, 1px);
+  grid-auto-rows: 1px;
+  grid-column-gap: var(--gap);
+  padding: 0 var(--pad);
+}
+.item.data-v-7b8d87e2 {
+  margin-bottom: var(--mbt);
+  border-radius: var(--br);
+  box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  overflow: hidden;
+  font-size: 0;
+  -webkit-transform: transition3d(0, 0, 0);
+          transform: transition3d(0, 0, 0);
+}
+.item .char.data-v-7b8d87e2 {
+  height: var(--h);
+}
+.char.data-v-7b8d87e2 {
+  padding: 0 10rpx;
+}
+.char .title.data-v-7b8d87e2 {
+  line-height: 48rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #222;
+}
+.char .desc.data-v-7b8d87e2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 36rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+

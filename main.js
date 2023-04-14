@@ -11,7 +11,9 @@ Vue.component('tabbar', tabbar);
 // 在 uni-app 项目中，可以把 $http 挂载到 uni 顶级对象之上，方便全局调用
 uni.$http = $http
 //请求根路径
-$http.baseUrl = 'http://www.gerry42.top:8000'
+// $http.baseUrl = 'http://www.gerry42.top:8000'
+$http.baseUrl = 'https://www.expiredcanned.love'
+// $http.baseUrl = 'http://100.66.108.73:8000'
 
 //请求拦截器
 $http.beforeRequest = function(options) {

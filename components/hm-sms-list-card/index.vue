@@ -5,23 +5,23 @@
       <div class="sub">
         <div class="outer">
           <div class="wrap">
-            <text style="color: black;font-size: 15px; font-weight: 600;">{{ options.paybak }}</text>
+            <text class="title">{{ options.paybak }}</text>
           </div>
-          <text class="txt" @click="toPointDetail()">{{ options.txt }}</text>
+          <text class="txt" @click="toPointDetail(options.id)">{{ options.txt }}</text>
         </div>
         <div class="block">
           <image src="../../static/my-icons/time.png" style="width: 15px; height: 15px;"></image>
-          <text style="color: #47a6ff; font-size: 10px;">2023年3月14日21:53:12</text>
+          <text class="opentime">{{options.openNote}}</text>
         </div>
         <div class="block" v-if="isShowRate">
           评个分吧：
           <uni-rate allow-half :value="0" />
         </div>
-        <div class="block" v-else="isShowRate">
-          <xiaoStarComponent :starCount="6.5" :title="'大众评分'"></xiaoStarComponent>
+        <div class="block" v-else="isShowRate" style="margin-top: 10px;">
+          <xiaoStarComponent :starCount="options.score" :title="'大众评分'"></xiaoStarComponent>
         </div>
       </div>
-      <image class="side" :src="options.side" />
+      <image class="side" :src="options.side" @click="toPointDetail(options.id)"/>
     </div>
   </div>
 </template>
@@ -59,7 +59,14 @@
     data() {
       return {};
     },
-    methods: {}
+    methods: {
+      toPointDetail(id) {
+        console.log(id);
+        uni.navigateTo({
+          url: '/subpkg/sub_pointDetail/sub_pointDetail?id=' + id
+        })
+      }
+    }
   };
 </script>
 <style>

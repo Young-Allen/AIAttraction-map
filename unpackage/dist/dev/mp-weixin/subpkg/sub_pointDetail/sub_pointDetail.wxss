@@ -66,6 +66,7 @@ page {
   height: auto;
   width: 100%;
   border-bottom: 1px solid #d1d1d1;
+  padding: 10px 0px;
 }
 .point .point-detail .detail .detail-title {
   color: #666;
