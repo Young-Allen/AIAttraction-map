@@ -15,6 +15,18 @@ const tourgroupApi = {
     return res.data.data
   },
 
+  //退出群组
+  async exitGroup() {
+    const res = await uni.$http.get('/api/tourgroup/exit')
+    return res.data.data
+  },
+  
+  //解散群组
+  async deleteGroup(groupid){
+    const res = await uni.$http.DELETE(`/api/tourgroup/${groupid}`)
+    return res.data.data
+  },
+
   //获取群组详情信息
   async tourGroupInfo() {
     const res = await uni.$http.get('/api/tourgroup/info')

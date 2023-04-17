@@ -9,7 +9,8 @@
           <view class="cell">
             <text class="pointTitle">{{attractionDetail.name}}</text>
             <view style="display: flex; align-items: center;">
-              <text class="pointRate">大众评分：{{attractionDetail.score}}</text>
+              大众评分：<text class="pointRate"
+                v-if="attractionDetail.score !== null">{{attractionDetail.score | formatScore}}</text>
               <uni-rate allow-half readonly="true" :value="attractionDetail.score" color="#bbb"
                 active-color="#4095e5" />
             </view>
@@ -20,7 +21,8 @@
       <view class="point-detail">
         <view class="detail">
           <text class="detail-title">开放时间</text>
-          <text style="color: #4095e5; font-weight: bold; font-size: 20px;">{{attractionDetail.openNote}}</text>
+          <text style="color: #4095e5; font-weight: bold; font-size: 20px;"
+            v-if="attractionDetail.openNote != null">{{attractionDetail.openNote}}</text>
         </view>
         <view class="detail">
           <text class="detail-title">门票价格</text>
@@ -34,15 +36,15 @@
         </view>
         <view class="detail">
           <text class="detail-title">具体地址</text>
-          <text style="font-weight: bold;">{{attractionDetail.address}}</text>
+          <text style="font-weight: bold;" v-if="attractionDetail.address != null">{{attractionDetail.address}}</text>
         </view>
         <view class="detail">
           <text class="detail-title">景区类型</text>
-          <text style="font-weight: bold;">{{attractionDetail.category}}</text>
+          <text style="font-weight: bold;" v-if="attractionDetail.category != null">{{attractionDetail.category}}</text>
         </view>
         <view class="detail">
           <text class="detail-title">官方号码</text>
-          <text style="font-weight: bold;">{{attractionDetail.tel}}</text>
+          <text style="font-weight: bold;" v-if="attractionDetail.tel != null">{{attractionDetail.tel}}</text>
         </view>
       </view>
       <view style="margin-bottom: 60px;">
@@ -74,6 +76,11 @@
         infra: {},
         tagType: ["primary", "success", "warning", "error", ""],
       };
+    },
+    filters: {
+      formatScore(value) {
+        return value.toFixed(1)
+      }
     },
     onLoad(option) {
       attractionApi.getAttractionListById(option.id).then(res => {

@@ -22,7 +22,7 @@
       <view class="roadContent">
         <view class="scenicCon" v-if="polyline.length !== 0">
           <text v-if="spendTime !== '' && spendTime != null"
-            style="color: #47a6ff; font-weight: 700; font-size: 17px; text-align: center; margin-bottom: 5px;">预计花费时间：{{spendTime}}分钟</text>
+            style="color: #47a6ff; font-weight: 700; font-size: 17px; text-align: center; margin-bottom: 5px;">预计花费时间：{{spendTime | formatTime}}分钟</text>
           <!-- 景点进度条 -->
           <uni-steps :options="threeRoadOne" :active="activePoint" @switchSpot="switchSpot"></uni-steps>
           <!-- 景点卡片 -->
@@ -92,7 +92,8 @@
 
     <!-- 扫码好评 -->
     <uni-popup ref="inputDialog" type="dialog">
-      <uni-popup-dialog ref="inputClose" mode="input" title="评价一下当前景点吧!" @confirm="dialogInputConfirm">
+      <uni-popup-dialog ref="inputClose" mode="input" title="评价一下当前景点吧!" @confirm="dialogInputConfirm"
+        @close="dialogClose">
         <view class="popupBox">
           <text>{{scanPoint.name}}</text>
           <uni-rate allow-half :value="scanPoint.score" />
@@ -149,6 +150,11 @@
       activePoint(newIndex, oldIndex) {
         this.moveToLocation(this.threeRoadOne[newIndex])
       },
+    },
+    filters: {
+      formatTime(value) {
+        return value.toFixed(2)
+      }
     },
     data() {
       return {
@@ -234,16 +240,11 @@
       this._mapContext.initMarkerCluster({
         enableDefaultStyle: false,
         zoomOnClick: true,
-        gridSize: 40,
+        gridSize: 20,
       });
 
       //限制地图移动范围
       this.setMapBoundary()
-
-      //获取景点信息
-      attractionApi.getAttractionList(1, 50).then(res => {
-        this.updateAllPoints(res.data[0])
-      })
 
       //获取景点实时人数
       const res = await attractionApi.getDynamicAttractionInfo()
@@ -281,6 +282,12 @@
         that.notice = JSON.parse(res.data).content
       });
 
+      setInterval(() => {
+        uni.sendSocketMessage({
+          data: ''
+        });
+      }, 1000 * 30);
+
     },
 
     onLoad(option) {
@@ -295,6 +302,11 @@
         const moveToPos = JSON.parse(decodeURIComponent(option.pos));
         this.moveToLocation(moveToPos)
       }
+
+      //获取景点信息
+      attractionApi.getAttractionList(1, 50).then(res => {
+        this.updateAllPoints(res.data[0])
+      })
 
       //获取景点实时人数
       this.getCrowdsTimer = setInterval(() => {
@@ -344,14 +356,31 @@
         this.roadContent[1].active = true
 
         for (var i = 0; i < this.dynamicRoad.length - 1; i++) {
-          let to = {
-              longitude: this.dynamicRoad[i + 1].longitude,
-              latitude: this.dynamicRoad[i + 1].latitude
-            },
+          let to = {},
+            from = {};
+          if (this.dynamicRoad[i].name === "三叠泉" || (i == 0 && this.dynamicRoad[i + 1].name === "三叠泉")) {
+            from = {
+              longitude: '116.024443',
+              latitude: '29.560302'
+            }
+          } else {
             from = {
               longitude: this.dynamicRoad[i].longitude,
               latitude: this.dynamicRoad[i].latitude
-            };
+            }
+          }
+          if (this.dynamicRoad[i + 1].name === "三叠泉") {
+            to = {
+              longitude: '116.024443',
+              latitude: '29.560302'
+            }
+          } else {
+            to = {
+              longitude: this.dynamicRoad[i + 1].longitude,
+              latitude: this.dynamicRoad[i + 1].latitude
+            }
+          }
+
           //非企业用户限制并发访问量为5次/秒，设置延时访问
           setTimeout(function() {
             that.addPointPolyline(from, to)
@@ -462,11 +491,15 @@
 
       //确认扫码好评
       dialogInputConfirm(val) {
+        console.log(this.scanPoint);
         attractionApi.addNewScore(this.scanPoint.id, this.scanPoint.score).then(res => {
           console.log(res);
         })
         // 关闭窗口后，恢复默认内容
         this.$refs.inputDialog.close()
+      },
+      dialogClose() {
+        this.dialogInputConfirm()
       },
 
       //点击扫一扫

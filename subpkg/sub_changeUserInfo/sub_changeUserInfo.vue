@@ -14,7 +14,7 @@
         <text>姓名</text>
         <input type="text" v-model="name">
       </view>
-      
+
       <view class="ui-list right">
         <text>性别</text>
         <picker @change="bindPickerChange" mode='selector' range-key="name" :value="index" :range="sex">
@@ -312,17 +312,17 @@
           gender: res.data.gender,
           interests,
         }
-        
+
         //向算法端传送感兴趣的景点
-        wx.request({
-          url: 'http://region-42.seetacloud.com:55956/recommend',
+        wx.vrequest({
+          url: 'http://region-41.seetacloud.com:59650/recommend',
           method: "POST",
           header: {
             'content-type': 'application/json' // 默认值
           },
-          data: recommendUser,
-          success(res) {
-            console.log(res.data)
+          data: JSON.stringify(recommendUser),
+          success: res => {
+            console.log('[post.res]', res);
           }
         })
 

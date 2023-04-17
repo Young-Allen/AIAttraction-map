@@ -16,6 +16,11 @@
         <uni-icons type="paperplane-filled" size="20" color="white"></uni-icons>发送群消息
       </button>
     </view>
+    <view class="footer" v-else>
+      <button style="border-radius: 20px; background-color: #47a6ff; color: white; width: 90%;" @click="exitGroup()">
+        <uni-icons type="undo-filled" size="20" color="white"></uni-icons>退出群组
+      </button>
+    </view>
 
   </view>
 </template>
@@ -85,7 +90,11 @@
     methods: {
       ...mapMutations('m_group', ['updateCreator']),
       
-      //
+      exitGroup(){
+        tourgroupApi.exitGroup().then(res => {
+          console.log(res);
+        })
+      },
       //发送群消息
       dialogInputConfirm() {
         console.log(this.subject);

@@ -27,7 +27,7 @@ export default {
       },
     }, {
       id: 2,
-      src: "https://www.hualigs.cn/image/643598e529a5d.jpg",
+      src: "https://www.hualigs.cn/image/643991c5c41f2.jpg",
       bounds: {
         //左下经纬度
         southwest: {

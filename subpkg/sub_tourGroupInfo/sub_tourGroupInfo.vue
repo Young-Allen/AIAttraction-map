@@ -24,23 +24,36 @@
       </view>
     </view>
 
-    <!-- <view class="list-btn-reject" v-if="creator.id === groupInfo.creator"><button type="button" @click="handleClickRej">解散群组</button></view> -->
+    <view class="list-btn-reject" v-if="creator.id === groupInfo.creator"><button type="button"
+        @click="handleClickRej(groupInfo.id)">解散群组</button></view>
+
+    <uni-popup ref="message" type="message">
+      <uni-popup-message :type="error" :message="messageText" :duration="2000"></uni-popup-message>
+    </uni-popup>
+
+    <uni-popup ref="alertDialog" type="dialog">
+      <uni-popup-dialog :type="msgType" cancelText="关闭" confirmText="同意" title="通知" content="确认解散群组吗？"
+        @confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
+    </uni-popup>
   </view>
 </template>
 
 <script>
+  import tourgroupApi from '@/api/tourgroupApi.js'
   import {
     mapState,
     mapMutations
   } from 'vuex'
 
+  
   export default {
     computed: {
       ...mapState('m_group', ['creator']),
     },
     data() {
       return {
-        groupInfo: {}
+        groupInfo: {},
+        messageText: '',
       };
     },
     onLoad(option) {
@@ -49,11 +62,20 @@
       }
     },
     methods: {
-      handleClickRej() {
-        uni.showToast({
-          title: '拒绝',
-          duration: 2000
-        })
+      dialogConfirm() {
+        console.log(this.groupInfo);
+        console.log('点击确认')
+        this.messageText = `已删除群组`
+        this.$refs.message.open()
+        // tourgroupApi.deleteGroup(this.groupInfo.id).then(res => {
+        //   console.log(res);
+        // })
+      },
+      dialogClose() {
+        console.log('点击关闭')
+      },
+      handleClickRej(id) {
+        this.$refs.alertDialog.open()
       }
     }
   };

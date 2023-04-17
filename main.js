@@ -13,7 +13,7 @@ uni.$http = $http
 //请求根路径
 // $http.baseUrl = 'http://www.gerry42.top:8000'
 $http.baseUrl = 'https://www.expiredcanned.love'
-// $http.baseUrl = 'http://100.66.108.73:8000'
+// $http.baseUrl = 'http://192.168.43.3:8000'
 
 //请求拦截器
 $http.beforeRequest = function(options) {

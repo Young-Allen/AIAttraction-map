@@ -29,7 +29,7 @@ const attractionApi = {
   //评价景点
   async addNewScore(id, score) {
     let query = {
-      id,
+      attractionId: id,
       score,
     }
     const res = await uni.$http.post('/rating/new', query)

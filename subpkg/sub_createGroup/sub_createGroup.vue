@@ -62,11 +62,11 @@
     methods: {
       submit(ref) {
         console.log(this.valiFormData);
-        // tourgroupApi.createGroup(this.valiFormData).then(res => {
-        //   this.successMsg = res.inviteCode
-        //   this.$refs.alertDialog.open()
-        //   console.log(res);
-        // })
+        tourgroupApi.createGroup(this.valiFormData).then(res => {
+          this.successMsg = res.inviteCode
+          this.$refs.alertDialog.open()
+          console.log(res);
+        })
       },
       dialogConfirm() {
         uni.navigateBack({

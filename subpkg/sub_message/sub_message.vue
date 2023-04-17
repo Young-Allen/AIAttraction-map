@@ -2,7 +2,7 @@
   <view>
     <view class="" v-for="(item, index) in msgList" :key="index">
       <uni-card :is-shadow="false" style="border-radius: 50px;">
-        <uni-section :title="item.publishWay + ' : ' + item.type" :sub-title="item.publishTime | parseTime" type="line">
+        <uni-section :title="item.type + ' : ' + item.subject" :sub-title="item.publishTime | parseTime" type="line">
           <uni-notice-bar :text="item.content" />
         </uni-section>
       </uni-card>
